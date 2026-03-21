@@ -1,0 +1,13 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "casualcreations:items/pickaxe_head",
+    "layer1": "casualcreations:items/pickaxe_rod"
+  },
+  "forge:item_layer": {
+    "layers": {
+      "0": { "tintindex": 0 },
+      "1": { "tintindex": 1 }
+    }
+  }
+}

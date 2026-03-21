@@ -1,0 +1,13 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "casualcreations:items/hoe_head",
+    "layer1": "casualcreations:items/hoe_rod"
+  },
+  "forge:item_layer": {
+    "layers": {
+      "0": { "tintindex": 0 },
+      "1": { "tintindex": 1 }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "casualcreations:items/sword_head",
+    "layer1": "casualcreations:items/sword_rod"
+  },
+  "forge:item_layer": {
+    "layers": {
+      "0": { "tintindex": 0 },
+      "1": { "tintindex": 1 }
+    }
+  }
+}

@@ -1,2 +1,14 @@
 tile.casualcreations.diamond_anvil.name=Diamond Anvil
 gui.diamond_anvil.durability=Durability: %d/%d
+item.casualcreations.forge_core.name=Forge Core
+item.casualcreations.sword.name=Sword
+item.casualcreations.pickaxe.name=Pickaxe
+item.casualcreations.axe.name=Axe
+item.casualcreations.shovel.name=Shovel
+item.casualcreations.hoe.name=Hoe
+casualcreations.material.wood=Wood
+casualcreations.material.stone=Stone
+casualcreations.material.iron=Iron
+casualcreations.material.gold=Gold
+casualcreations.material.diamond=Diamond
+casualcreations.material.obsidian=Obsidian

@@ -1,13 +1,16 @@
 package com.npstra.casualcreations;
 
-import com.npstra.casualcreations.block.BlockDiamondAnvil;
-import com.npstra.casualcreations.block.TileEntityDiamondAnvil;
-import com.npstra.casualcreations.container.ContainerDiamondAnvil;
-import com.npstra.casualcreations.gui.GuiDiamondAnvil;
-import com.npstra.casualcreations.item.ItemDiamondAnvil;
+import com.npstra.casualcreations.config.ConfigHandler;
+import com.npstra.casualcreations.items.ModItems;
+import com.npstra.casualcreations.materials.MaterialLoader;
+import com.npstra.casualcreations.recipes.ModularToolRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,64 +23,63 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = CasualCreations.MODID, name = CasualCreations.NAME, version = CasualCreations.VERSION)
-public class CasualCreations implements IGuiHandler {
+public class CasualCreations {
 
     public static final String MODID = "casualcreations";
     public static final String NAME = "Casual Creations";
     public static final String VERSION = "1.0.0";
-    public static final int GUI_ID_DIAMOND_ANVIL = 0;
 
     @Mod.Instance(MODID)
     public static CasualCreations instance;
 
-    public static Block diamondAnvil;
-
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntityDiamondAnvil.class, new ResourceLocation(MODID, "diamond_anvil"));
+        ConfigHandler.init(event);
+        MaterialLoader.loadMaterials();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, this);
     }
 
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
         public static void registerBlocks(RegistryEvent.Register<Block> event) {
-            diamondAnvil = new BlockDiamondAnvil();
-            diamondAnvil.setRegistryName(MODID, "diamond_anvil");
-            diamondAnvil.setTranslationKey(MODID + ".diamond_anvil");
-            event.getRegistry().register(diamondAnvil);
         }
 
         @SubscribeEvent
-        public static void registerItems(RegistryEvent.Register<net.minecraft.item.Item> event) {
-            event.getRegistry().register(new ItemDiamondAnvil(diamondAnvil).setRegistryName(diamondAnvil.getRegistryName()));
+        public static void registerItems(RegistryEvent.Register<Item> event) {
+            event.getRegistry().register(ModItems.FORGE_CORE);
+            event.getRegistry().register(ModItems.SWORD);
+            event.getRegistry().register(ModItems.PICKAXE);
+            event.getRegistry().register(ModItems.AXE);
+            event.getRegistry().register(ModItems.SHOVEL);
+            event.getRegistry().register(ModItems.HOE);
         }
     }
 
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, net.minecraft.world.World world, int x, int y, int z) {
-        if (ID == GUI_ID_DIAMOND_ANVIL) {
-            net.minecraft.tileentity.TileEntity te = world.getTileEntity(new net.minecraft.util.math.BlockPos(x, y, z));
-            if (te instanceof TileEntityDiamondAnvil) {
-                return new ContainerDiamondAnvil(player.inventory, (TileEntityDiamondAnvil) te, world, player);
-            }
+    @Mod.EventBusSubscriber
+    public static class RecipeHandler {
+        @SubscribeEvent
+        public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+            event.getRegistry().register(new ModularToolRecipe().setRegistryName(MODID, "modular_tool"));
         }
-        return null;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Object getClientGuiElement(int ID, EntityPlayer player, net.minecraft.world.World world, int x, int y, int z) {
-        if (ID == GUI_ID_DIAMOND_ANVIL) {
-            net.minecraft.tileentity.TileEntity te = world.getTileEntity(new net.minecraft.util.math.BlockPos(x, y, z));
-            if (te instanceof TileEntityDiamondAnvil) {
-                return new GuiDiamondAnvil(player.inventory, (TileEntityDiamondAnvil) te);
-            }
+    @Mod.EventBusSubscriber(value = Side.CLIENT, modid = MODID)
+    public static class ClientHandler {
+        @SubscribeEvent
+        @SideOnly(Side.CLIENT)
+        public static void registerModels(ModelRegistryEvent event) {
+            ModItems.registerModels();
         }
-        return null;
+
+        @SubscribeEvent
+        @SideOnly(Side.CLIENT)
+        public static void registerColors(ColorHandlerEvent.Item event) {
+            event.getItemColors().registerItemColorHandler(new com.npstra.casualcreations.client.ItemColorHandler(),
+                    ModItems.SWORD, ModItems.PICKAXE, ModItems.AXE, ModItems.SHOVEL, ModItems.HOE);
+        }
     }
 }

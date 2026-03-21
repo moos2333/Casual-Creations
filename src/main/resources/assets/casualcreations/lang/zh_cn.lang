@@ -1,2 +1,14 @@
 tile.casualcreations.diamond_anvil.name=钻石砧
 gui.diamond_anvil.durability=耐久: %d/%d
+item.casualcreations.forge_core.name=锻造核心
+item.casualcreations.sword.name=剑
+item.casualcreations.pickaxe.name=镐
+item.casualcreations.axe.name=斧
+item.casualcreations.shovel.name=锹
+item.casualcreations.hoe.name=锄
+casualcreations.material.wood=木
+casualcreations.material.stone=石
+casualcreations.material.iron=铁
+casualcreations.material.gold=金
+casualcreations.material.diamond=钻石
+casualcreations.material.obsidian=黑曜石
