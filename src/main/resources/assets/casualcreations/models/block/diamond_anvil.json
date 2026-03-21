@@ -1,0 +1,8 @@
+{
+  "parent": "block/anvil",
+  "textures": {
+    "particle": "casualcreations:blocks/diamond_anvil",
+    "body": "casualcreations:blocks/diamond_anvil",
+    "top": "casualcreations:blocks/diamond_anvil_top"
+  }
+}

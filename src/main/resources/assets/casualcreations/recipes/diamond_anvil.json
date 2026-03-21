@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    " I ",
+    "III"
+  ],
+  "key": {
+    "D": { "item": "minecraft:diamond_block" },
+    "I": { "item": "minecraft:diamond" }
+  },
+  "result": {
+    "item": "casualcreations:diamond_anvil"
+  }
+}
