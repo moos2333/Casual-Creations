@@ -50,12 +50,12 @@ public class ModularKnife extends ItemSword implements IModularTool {
         RodMaterial rod = MaterialRegistry.getRod(rodName);
         if (head == null || rod == null) return 1.5f;
 
-        float base = 1.5f;
+        float base = 2.5f;
         float headBonus = head.getAttackDamage();
         float toolFactor = 0.8f;
         float rodMult = rod.getDamageMultiplier();
 
-        return (base + headBonus * toolFactor) * rodMult;
+        return (base + headBonus * toolFactor) * (rodMult - 0.2f);
     }
 
     private float calculateAttackSpeed(ItemStack stack) {
@@ -78,17 +78,17 @@ public class ModularKnife extends ItemSword implements IModularTool {
     public int getMaxDamage(ItemStack stack) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 5;
+        if (headName == null || rodName == null) return 20;
 
         HeadMaterial head = MaterialRegistry.getHead(headName);
         RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 5;
+        if (head == null || rod == null) return 20;
 
-        int base = 5;
+        int base = 20;
         int headBonus = head.getDurability();
         float rodMult = rod.getDurabilityMultiplier();
 
-        return (int) ((base + headBonus) * rodMult);
+        return (int) ((base + headBonus) * (rodMult - 0.2f));
     }
 
     @Override

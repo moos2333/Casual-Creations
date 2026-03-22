@@ -1,0 +1,13 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "casualcreations:items/battleaxe_head",
+    "layer1": "casualcreations:items/battleaxe_rod"
+  },
+  "forge:item_layer": {
+    "layers": {
+      "0": { "tintindex": 0 },
+      "1": { "tintindex": 1 }
+    }
+  }
+}

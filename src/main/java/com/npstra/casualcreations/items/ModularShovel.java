@@ -91,7 +91,8 @@ public class ModularShovel extends ItemSpade implements IModularTool {
         return (int) ((base + headBonus) * rodMult);
     }
 
-    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
+    @Override
+    public float getDestroySpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
         if (headName == null || rodName == null) return 1.0f;
