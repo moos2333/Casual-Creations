@@ -7,14 +7,14 @@ import com.npstra.casualcreations.materials.MaterialRegistry;
 import com.npstra.casualcreations.materials.RodMaterial;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 
-public class ModularPickaxe extends ItemPickaxe implements IModularTool {
-    public ModularPickaxe() {
+public class ModularKnife extends ItemSword implements IModularTool {
+    public ModularKnife() {
         super(ToolMaterial.WOOD);
-        setTranslationKey(CasualCreations.MODID + ".pickaxe");
-        setRegistryName("pickaxe");
+        setTranslationKey(CasualCreations.MODID + ".knife");
+        setRegistryName("knife");
     }
 
     @Override
@@ -44,13 +44,13 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
     private float calculateDamage(ItemStack stack) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 1.0f;
+        if (headName == null || rodName == null) return 1.5f;
 
         HeadMaterial head = MaterialRegistry.getHead(headName);
         RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 1.0f;
+        if (head == null || rod == null) return 1.5f;
 
-        float base = 1.0f;
+        float base = 1.5f;
         float headBonus = head.getAttackDamage();
         float toolFactor = 0.8f;
         float rodMult = rod.getDamageMultiplier();
@@ -61,13 +61,13 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
     private float calculateAttackSpeed(ItemStack stack) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 1.2f;
+        if (headName == null || rodName == null) return 2.0f;
 
         HeadMaterial head = MaterialRegistry.getHead(headName);
         RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 1.2f;
+        if (head == null || rod == null) return 2.0f;
 
-        float base = 1.2f;
+        float base = 2.0f;
         float headBonus = head.getAttackSpeed();
         float rodMult = rod.getAttackSpeedMultiplier();
 
@@ -78,33 +78,17 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
     public int getMaxDamage(ItemStack stack) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 30;
+        if (headName == null || rodName == null) return 5;
 
         HeadMaterial head = MaterialRegistry.getHead(headName);
         RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 30;
+        if (head == null || rod == null) return 5;
 
-        int base = 30;
+        int base = 5;
         int headBonus = head.getDurability();
         float rodMult = rod.getDurabilityMultiplier();
 
         return (int) ((base + headBonus) * rodMult);
-    }
-
-    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-        String headName = getHeadMaterial(stack);
-        String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 1.0f;
-
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 1.0f;
-
-        float base = 1.0f;
-        float headBonus = head.getMiningSpeed();
-        float rodMult = rod.getSpeedMultiplier();
-
-        return (base + headBonus) * rodMult;
     }
 
     @Override
@@ -120,17 +104,5 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
         int base = head.getEnchantability();
         float mult = rod.getEnchantabilityMultiplier();
         return (int) (base * mult);
-    }
-
-    @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass, net.minecraft.entity.player.EntityPlayer player, net.minecraft.block.state.IBlockState blockState) {
-        String headName = getHeadMaterial(stack);
-        if (headName != null) {
-            HeadMaterial head = MaterialRegistry.getHead(headName);
-            if (head != null) {
-                return head.getHarvestLevel();
-            }
-        }
-        return super.getHarvestLevel(stack, toolClass, player, blockState);
     }
 }

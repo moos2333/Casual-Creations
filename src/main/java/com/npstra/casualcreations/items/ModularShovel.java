@@ -121,4 +121,16 @@ public class ModularShovel extends ItemSpade implements IModularTool {
         float mult = rod.getEnchantabilityMultiplier();
         return (int) (base * mult);
     }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, String toolClass, net.minecraft.entity.player.EntityPlayer player, net.minecraft.block.state.IBlockState blockState) {
+        String headName = getHeadMaterial(stack);
+        if (headName != null) {
+            HeadMaterial head = MaterialRegistry.getHead(headName);
+            if (head != null) {
+                return head.getHarvestLevel();
+            }
+        }
+        return super.getHarvestLevel(stack, toolClass, player, blockState);
+    }
 }

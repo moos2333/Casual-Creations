@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "item/handheld",
   "textures": {
     "layer0": "casualcreations:items/pickaxe_head",
     "layer1": "casualcreations:items/pickaxe_rod"

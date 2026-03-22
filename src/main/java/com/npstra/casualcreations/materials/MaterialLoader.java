@@ -28,16 +28,16 @@ public class MaterialLoader {
         loadRodsFromAssets(rods);
 
         if (heads.isEmpty()) {
-            heads.put("wood", new HeadMaterial("wood", "Wood", 0x8B5A2B, 30, 0.0f, 0.0f, 2.0f, 15));
-            heads.put("stone", new HeadMaterial("stone", "Stone", 0xC0C0C0, 96, 1.0f, -0.1f, 4.0f, 5));
-            heads.put("iron", new HeadMaterial("iron", "Iron", 0xF8F8F8, 226, 2.0f, 0.0f, 5.0f, 14));
-            heads.put("gold", new HeadMaterial("gold", "Gold", 0xFFE86E, 2, 0.0f, 0.2f, 12.0f, 22));
-            heads.put("diamond", new HeadMaterial("diamond", "Diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18));
-            heads.put("obsidian", new HeadMaterial("obsidian", "Obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3));
+            heads.put("wood", new HeadMaterial("wood", "Wood", 0x9B6A3B, 30, 0.0f, 0.0f, 2.0f, 15, 0));
+            heads.put("stone", new HeadMaterial("stone", "Stone", 0xC0C0C0, 96, 1.0f, -0.1f, 4.0f, 5, 1));
+            heads.put("iron", new HeadMaterial("iron", "Iron", 0xF8F8F8, 226, 2.0f, 0.0f, 5.0f, 14, 2));
+            heads.put("gold", new HeadMaterial("gold", "Gold", 0xFFE86E, 2, 0.0f, 0.2f, 12.0f, 22, 0));
+            heads.put("diamond", new HeadMaterial("diamond", "Diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18, 3));
+            heads.put("obsidian", new HeadMaterial("obsidian", "Obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3, 3));
             generateDefaultHeadFiles(heads);
         }
         if (rods.isEmpty()) {
-            rods.put("wood", new RodMaterial("wood", "Wooden Rod", 0x8B5A2B, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+            rods.put("wood", new RodMaterial("wood", "Wooden Rod", 0x9B6A3B, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
             rods.put("bone", new RodMaterial("bone", "Bone Rod", 0xF0F0F0, 0.9f, 1.1f, 1.1f, 1.05f, 1.1f));
             rods.put("blaze", new RodMaterial("blaze", "Blaze Rod", 0xFFA500, 1.1f, 1.2f, 0.9f, 1.15f, 0.9f));
             rods.put("emerald", new RodMaterial("emerald", "Emerald Rod", 0x50C878, 1.4f, 0.9f, 0.9f, 1.0f, 1.5f));

@@ -9,8 +9,9 @@ public class HeadMaterial {
     private final float attackSpeed;
     private final float miningSpeed;
     private final int enchantability;
+    private final int harvestLevel;
 
-    public HeadMaterial(String name, String displayName, int color, int durability, float attackDamage, float attackSpeed, float miningSpeed, int enchantability) {
+    public HeadMaterial(String name, String displayName, int color, int durability, float attackDamage, float attackSpeed, float miningSpeed, int enchantability, int harvestLevel) {
         this.name = name;
         this.displayName = displayName;
         this.color = color;
@@ -19,6 +20,7 @@ public class HeadMaterial {
         this.attackSpeed = attackSpeed;
         this.miningSpeed = miningSpeed;
         this.enchantability = enchantability;
+        this.harvestLevel = harvestLevel;
     }
 
     public String getName() { return name; }
@@ -29,4 +31,5 @@ public class HeadMaterial {
     public float getAttackSpeed() { return attackSpeed; }
     public float getMiningSpeed() { return miningSpeed; }
     public int getEnchantability() { return enchantability; }
+    public int getHarvestLevel() { return harvestLevel; }
 }

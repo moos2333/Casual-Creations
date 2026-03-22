@@ -12,6 +12,7 @@ public class ModItems {
     public static final Item AXE = new ModularAxe();
     public static final Item SHOVEL = new ModularShovel();
     public static final Item HOE = new ModularHoe();
+    public static final Item KNIFE = new ModularKnife();
 
     public static void registerModels() {
         registerModel(FORGE_CORE, "forge_core");
@@ -20,6 +21,7 @@ public class ModItems {
         registerModel(AXE, "axe");
         registerModel(SHOVEL, "shovel");
         registerModel(HOE, "hoe");
+        registerModel(KNIFE, "knife");
     }
 
     private static void registerModel(Item item, String name) {
