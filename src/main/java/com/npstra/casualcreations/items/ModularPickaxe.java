@@ -93,15 +93,7 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
-        return super.canHarvestBlock(state, stack);
-    }
-
-    @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if (!canHarvestBlock(state, stack)) {
-            return 1.0f;
-        }
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) {
             return original;
