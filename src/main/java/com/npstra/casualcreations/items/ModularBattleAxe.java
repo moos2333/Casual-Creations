@@ -107,18 +107,22 @@ public class ModularBattleAxe extends ItemAxe implements IModularTool {
 
     @Override
     public float getDestroySpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
+        float original = super.getDestroySpeed(stack, state);
+        if (original <= 1.0f) {
+            return original;
+        }
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 1.0f;
+        if (headName == null || rodName == null) return original;
 
         HeadMaterial head = MaterialRegistry.getHead(headName);
         RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 1.0f;
+        if (head == null || rod == null) return original;
 
         float base = 1.0f;
         float headBonus = head.getMiningSpeed();
         float rodMult = rod.getSpeedMultiplier();
 
-        return (base + headBonus) * rodMult;
+        return (base + headBonus) * (rodMult - 0.25f);
     }
 }
