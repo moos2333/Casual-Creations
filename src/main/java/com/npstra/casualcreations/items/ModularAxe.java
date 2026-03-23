@@ -128,6 +128,9 @@ public class ModularAxe extends ItemAxe implements IModularTool {
 
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass, net.minecraft.entity.player.EntityPlayer player, net.minecraft.block.state.IBlockState blockState) {
+        if (toolClass == null || !toolClass.equals("axe")) {
+            return -1;
+        }
         String headName = getHeadMaterial(stack);
         if (headName != null) {
             HeadMaterial head = MaterialRegistry.getHead(headName);
