@@ -5,7 +5,6 @@ import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.materials.HeadMaterial;
 import com.npstra.casualcreations.materials.MaterialRegistry;
 import com.npstra.casualcreations.materials.RodMaterial;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
@@ -92,7 +91,7 @@ public class ModularAxe extends ItemAxe implements IModularTool {
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) {
             return original;
@@ -128,7 +127,7 @@ public class ModularAxe extends ItemAxe implements IModularTool {
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass, net.minecraft.entity.player.EntityPlayer player, IBlockState blockState) {
+    public int getHarvestLevel(ItemStack stack, String toolClass, net.minecraft.entity.player.EntityPlayer player, net.minecraft.block.state.IBlockState blockState) {
         String headName = getHeadMaterial(stack);
         if (headName != null) {
             HeadMaterial head = MaterialRegistry.getHead(headName);
