@@ -93,9 +93,6 @@ public class ModularAxe extends ItemAxe implements IModularTool {
 
     @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
-        if (!canHarvestBlock(state, stack)) {
-            return 1.0f;
-        }
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) {
             return original;
