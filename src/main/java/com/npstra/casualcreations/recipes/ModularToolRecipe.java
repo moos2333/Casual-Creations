@@ -24,10 +24,12 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
         PATTERNS.put("sword", new ToolPattern("sword", new String[]{" M ", " M ", " R "}, null, 2, 1, () -> ModItems.SWORD));
         PATTERNS.put("pickaxe", new ToolPattern("pickaxe", new String[]{"MMM", " R ", " R "}, null, 3, 2, () -> ModItems.PICKAXE));
         PATTERNS.put("axe", new ToolPattern("axe", new String[]{"MM ", "MR ", " R "}, null, 3, 2, () -> ModItems.AXE));
+        PATTERNS.put("axe_right", new ToolPattern("axe_right", new String[]{" MM", " RM", " R "}, null, 3, 2, () -> ModItems.AXE));
         PATTERNS.put("shovel", new ToolPattern("shovel", new String[]{" M ", " R ", " R "}, null, 1, 2, () -> ModItems.SHOVEL));
         PATTERNS.put("hoe", new ToolPattern("hoe", new String[]{"MM ", " R ", " R "}, null, 2, 2, () -> ModItems.HOE));
+        PATTERNS.put("hoe_right", new ToolPattern("hoe_right", new String[]{" MM", " R ", " R "}, null, 2, 2, () -> ModItems.HOE));
         PATTERNS.put("knife", new ToolPattern("knife", new String[]{"   ", " M ", " R "}, new String[]{" M", " R"}, 1, 1, () -> ModItems.KNIFE));
-        PATTERNS.put("battleaxe", new ToolPattern("battleaxe", new String[]{"MMM", "MRM", " R "}, null, 5, 2, () -> ModItems.BATTLEAXE));
+        PATTERNS.put("battleaxe", new ToolPattern("battleaxe", new String[]{"MMM", "MRM", " R "}, null, 3, 2, () -> ModItems.BATTLEAXE));
     }
 
     @Override
@@ -84,7 +86,7 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
         if (core.isEmpty() || core.getItem() != ModItems.FORGE_CORE) return null;
 
         ToolPattern pattern = PATTERNS.get("knife");
-        if (pattern == null) return null;
+        if (pattern == null || pattern.shape2x2 == null) return null;
 
         String headMaterial = null;
         String rodMaterial = null;
@@ -173,14 +175,9 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
     }
 
     private String getHeadMaterial(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item == Items.IRON_INGOT) return "iron";
-        if (item == Items.GOLD_INGOT) return "gold";
-        if (item == Items.DIAMOND) return "diamond";
-        if (item == Item.getItemFromBlock(Blocks.PLANKS)) return "wood";
-        if (item == Item.getItemFromBlock(Blocks.COBBLESTONE)) return "stone";
-        if (item == Item.getItemFromBlock(Blocks.OBSIDIAN)) return "obsidian";
-        String regName = item.getRegistryName().toString();
+        String regName = stack.getItem().getRegistryName().toString();
+        String fromMap = MaterialRegistry.getHeadNameByItem(regName);
+        if (fromMap != null) return fromMap;
         for (String name : MaterialRegistry.getHeads().keySet()) {
             if (regName.contains(name)) return name;
         }
@@ -188,12 +185,9 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
     }
 
     private String getRodMaterial(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item == Items.STICK) return "wood";
-        if (item == Items.BONE) return "bone";
-        if (item == Items.BLAZE_ROD) return "blaze";
-        if (item == Items.EMERALD) return "emerald";
-        String regName = item.getRegistryName().toString();
+        String regName = stack.getItem().getRegistryName().toString();
+        String fromMap = MaterialRegistry.getRodNameByItem(regName);
+        if (fromMap != null) return fromMap;
         for (String name : MaterialRegistry.getRods().keySet()) {
             if (regName.contains(name)) return name;
         }
