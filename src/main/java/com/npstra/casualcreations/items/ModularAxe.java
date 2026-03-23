@@ -1,17 +1,28 @@
 package com.npstra.casualcreations.items;
 
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.materials.HeadMaterial;
 import com.npstra.casualcreations.materials.MaterialRegistry;
 import com.npstra.casualcreations.materials.RodMaterial;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 
+import java.util.Set;
+
 public class ModularAxe extends ItemAxe implements IModularTool {
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(
+            Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST,
+            Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER,
+            Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE
+    );
+
     public ModularAxe() {
         super(ToolMaterial.WOOD);
         setTranslationKey(CasualCreations.MODID + ".axe");
@@ -92,7 +103,15 @@ public class ModularAxe extends ItemAxe implements IModularTool {
     }
 
     @Override
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        return EFFECTIVE_ON.contains(state.getBlock());
+    }
+
+    @Override
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        if (!canHarvestBlock(state, stack)) {
+            return 1.0f;
+        }
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) {
             return original;
