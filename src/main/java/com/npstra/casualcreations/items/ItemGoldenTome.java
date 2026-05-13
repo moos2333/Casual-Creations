@@ -21,7 +21,7 @@ public class ItemGoldenTome extends Item {
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        return EnumRarity.RARE;
+        return EnumRarity.UNCOMMON;
     }
 
     @Override
