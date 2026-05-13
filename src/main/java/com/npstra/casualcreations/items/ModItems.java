@@ -1,6 +1,7 @@
 package com.npstra.casualcreations.items;
 
 import com.npstra.casualcreations.CasualCreations;
+import com.npstra.casualcreations.config.ConfigHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -14,6 +15,7 @@ public class ModItems {
     public static final Item HOE = new ModularHoe();
     public static final Item KNIFE = new ModularKnife();
     public static final Item BATTLEAXE = new ModularBattleAxe();
+    public static final Item GOLDEN_TOME = new ItemGoldenTome();
 
     public static void registerModels() {
         registerModel(FORGE_CORE, "forge_core");
@@ -24,6 +26,9 @@ public class ModItems {
         registerModel(HOE, "hoe");
         registerModel(KNIFE, "knife");
         registerModel(BATTLEAXE, "battleaxe");
+        if (ConfigHandler.enableGoldenTome) {
+            registerModel(GOLDEN_TOME, "golden_tome");
+        }
     }
 
     private static void registerModel(Item item, String name) {

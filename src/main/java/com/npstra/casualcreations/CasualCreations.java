@@ -17,12 +17,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = CasualCreations.MODID, name = CasualCreations.NAME, version = CasualCreations.VERSION)
+@Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION)
 public class CasualCreations {
 
-    public static final String MODID = "casualcreations";
-    public static final String NAME = "Casual Creations";
-    public static final String VERSION = "1.0.6";
+    public static final String MODID = Tags.MOD_ID;
+    public static final String NAME = Tags.MOD_NAME;
+    public static final String VERSION = Tags.VERSION;
 
     @Mod.Instance(MODID)
     public static CasualCreations instance;
@@ -53,6 +53,9 @@ public class CasualCreations {
             event.getRegistry().register(ModItems.HOE);
             event.getRegistry().register(ModItems.KNIFE);
             event.getRegistry().register(ModItems.BATTLEAXE);
+            if (ConfigHandler.enableGoldenTome) {
+                event.getRegistry().register(ModItems.GOLDEN_TOME);
+            }
         }
     }
 

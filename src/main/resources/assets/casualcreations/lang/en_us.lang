@@ -1,6 +1,5 @@
-tile.casualcreations.diamond_anvil.name=Diamond Anvil
-gui.diamond_anvil.durability=Durability: %d/%d
 item.casualcreations.forge_core.name=Forge Core
+item.casualcreations.forge_core.tooltip=Place in the bottom-left of crafting grid, then arrange materials in normal tool shape to craft modular tools.
 item.casualcreations.sword.name=Sword
 item.casualcreations.pickaxe.name=Pickaxe
 item.casualcreations.axe.name=Axe
@@ -14,4 +13,5 @@ casualcreations.material.iron=Iron
 casualcreations.material.gold=Gold
 casualcreations.material.diamond=Diamond
 casualcreations.material.obsidian=Obsidian
-item.casualcreations.forge_core.tooltip=Place in the bottom-left of crafting grid, then arrange materials in normal tool shape to craft modular tools.
+item.casualcreations.golden_tome.name=Golden Tome
+item.casualcreations.golden_tome.tooltip=Combine with a tool in an anvil to stack certain enchantments beyond limits

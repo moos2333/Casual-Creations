@@ -1,6 +1,5 @@
-tile.casualcreations.diamond_anvil.name=钻石砧
-gui.diamond_anvil.durability=耐久: %d/%d
 item.casualcreations.forge_core.name=锻造核心
+item.casualcreations.forge_core.tooltip=置于工作台左下角，按原版工具形状摆好材料即可制作模块化工具。
 item.casualcreations.sword.name=剑
 item.casualcreations.pickaxe.name=镐
 item.casualcreations.axe.name=斧
@@ -14,4 +13,5 @@ casualcreations.material.iron=铁
 casualcreations.material.gold=金
 casualcreations.material.diamond=钻石
 casualcreations.material.obsidian=黑曜石
-item.casualcreations.forge_core.tooltip=置于工作台左下角，按原版工具形状摆好材料即可制作模块化工具。
+item.casualcreations.golden_tome.name=黄金宝典
+item.casualcreations.golden_tome.tooltip=在铁砧上与工具合成，可叠加指定附魔并突破等级上限
