@@ -162,7 +162,7 @@ public class GoldenTomeHandler {
         output.setRepairCost(0);
 
         event.setOutput(output);
-        event.setCost(totalCost / 2);
+        event.setCost(other.getItem() instanceof ItemGoldenTome ? 0 : totalCost / 2);
         return true;
     }
 }
