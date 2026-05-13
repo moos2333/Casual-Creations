@@ -65,6 +65,7 @@ public class GoldenTomeHandler {
 
         int totalCost = 0;
         boolean applied = false;
+        int globalLimit = ConfigHandler.maxEnchantmentLevel;
 
         for (Map.Entry<Enchantment, Integer> entry : tomeEnchants.entrySet()) {
             Enchantment ench = entry.getKey();
@@ -76,10 +77,12 @@ public class GoldenTomeHandler {
             if (!ench.canApply(tool)) continue;
 
             int originalLevel = outEnchants.getOrDefault(ench, 0);
-            int newLevel = originalLevel + addLevel;
+            int effectiveAdd = Math.min(addLevel, globalLimit - originalLevel);
+            if (effectiveAdd <= 0) continue;
+
             int maxLevel = ench.getMaxLevel();
 
-            for (int i = 1; i <= addLevel; i++) {
+            for (int i = 1; i <= effectiveAdd; i++) {
                 int currentStep = originalLevel + i;
                 if (currentStep <= maxLevel) {
                     totalCost += 10;
@@ -88,7 +91,7 @@ public class GoldenTomeHandler {
                 }
             }
 
-            outEnchants.put(ench, newLevel);
+            outEnchants.put(ench, originalLevel + effectiveAdd);
             applied = true;
         }
 
@@ -126,6 +129,7 @@ public class GoldenTomeHandler {
         ItemStack output = new ItemStack(tome.getItem());
         Map<Enchantment, Integer> merged = new HashMap<>(tomeEnchants);
         int totalCost = 0;
+        int globalLimit = ConfigHandler.maxEnchantmentLevel;
 
         for (Map.Entry<Enchantment, Integer> entry : otherEnchants.entrySet()) {
             Enchantment ench = entry.getKey();
@@ -136,9 +140,11 @@ public class GoldenTomeHandler {
             if (!allowed.contains(id)) continue;
 
             int originalLevel = tomeEnchants.getOrDefault(ench, 0);
-            int maxLevel = ench.getMaxLevel();
+            int effectiveAdd = Math.min(addLevel, globalLimit - originalLevel);
+            if (effectiveAdd <= 0) continue;
 
-            for (int i = 1; i <= addLevel; i++) {
+            int maxLevel = ench.getMaxLevel();
+            for (int i = 1; i <= effectiveAdd; i++) {
                 int currentStep = originalLevel + i;
                 if (currentStep <= maxLevel) {
                     totalCost += 10;
@@ -147,7 +153,7 @@ public class GoldenTomeHandler {
                 }
             }
 
-            merged.merge(ench, addLevel, Integer::sum);
+            merged.merge(ench, effectiveAdd, Integer::sum);
         }
 
         if (merged.isEmpty()) return false;
