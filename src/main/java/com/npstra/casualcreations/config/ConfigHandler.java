@@ -28,7 +28,7 @@ public class ConfigHandler {
                     "Enable loading custom materials from config/materials folder");
             enableGoldenTome = config.getBoolean("enableGoldenTome", "general", true,
                     "Enable the Golden Tome item");
-            enableTomeBookMerge = config.getBoolean("enableTomeBookMerge", "goldenTome", false,
+            enableTomeBookMerge = config.getBoolean("enableTomeBookMerge", "goldenTome", true,
                     "Allow Golden Tome to merge with enchanted books on an anvil (like creative mode)");
             tomeBookMergeEnchantments = config.getStringList("tomeBookMergeEnchantments", "goldenTome",
                     new String[]{
