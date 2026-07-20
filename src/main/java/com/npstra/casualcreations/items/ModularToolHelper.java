@@ -15,10 +15,91 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModularToolHelper {
     private static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     private static final UUID ATTACK_SPEED_MODIFIER = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
+
+    private static final Map<String, Float> HEAD_DAMAGE_CACHE = new HashMap<>();
+    private static final Map<String, Float> ROD_DAMAGE_CACHE = new HashMap<>();
+    private static final Map<String, Float> HEAD_SPEED_CACHE = new HashMap<>();
+    private static final Map<String, Float> ROD_SPEED_CACHE = new HashMap<>();
+    private static final Map<String, Integer> HEAD_DURABILITY_CACHE = new HashMap<>();
+    private static final Map<String, Float> ROD_DURABILITY_CACHE = new HashMap<>();
+    private static final Map<String, Integer> HEAD_ENCHANT_CACHE = new HashMap<>();
+    private static final Map<String, Float> ROD_ENCHANT_CACHE = new HashMap<>();
+    private static final Map<String, Float> HEAD_MINING_CACHE = new HashMap<>();
+    private static final Map<String, Float> ROD_MINING_CACHE = new HashMap<>();
+
+    private static String getKey(String head, String rod, float factor) {
+        return MaterialRegistry.getVersion() + "|" + head + "|" + rod + "|" + factor;
+    }
+
+    private static String getKey(String head, String rod) {
+        return getKey(head, rod, 0f);
+    }
+
+    private static void ensureDamageCache(String head, String rod, float toolFactor) {
+        String key = getKey(head, rod, toolFactor);
+        if (!HEAD_DAMAGE_CACHE.containsKey(key)) {
+            HeadMaterial h = MaterialRegistry.getHead(head);
+            RodMaterial r = MaterialRegistry.getRod(rod);
+            if (h != null && r != null) {
+                HEAD_DAMAGE_CACHE.put(key, h.getAttackDamage() * toolFactor);
+                ROD_DAMAGE_CACHE.put(key, r.getDamageMultiplier());
+            }
+        }
+    }
+
+    private static void ensureSpeedCache(String head, String rod) {
+        String key = getKey(head, rod);
+        if (!HEAD_SPEED_CACHE.containsKey(key)) {
+            HeadMaterial h = MaterialRegistry.getHead(head);
+            RodMaterial r = MaterialRegistry.getRod(rod);
+            if (h != null && r != null) {
+                HEAD_SPEED_CACHE.put(key, h.getAttackSpeed());
+                ROD_SPEED_CACHE.put(key, r.getAttackSpeedMultiplier());
+            }
+        }
+    }
+
+    private static void ensureDurabilityCache(String head, String rod) {
+        String key = getKey(head, rod);
+        if (!HEAD_DURABILITY_CACHE.containsKey(key)) {
+            HeadMaterial h = MaterialRegistry.getHead(head);
+            RodMaterial r = MaterialRegistry.getRod(rod);
+            if (h != null && r != null) {
+                HEAD_DURABILITY_CACHE.put(key, h.getDurability());
+                ROD_DURABILITY_CACHE.put(key, r.getDurabilityMultiplier());
+            }
+        }
+    }
+
+    private static void ensureEnchantCache(String head, String rod) {
+        String key = getKey(head, rod);
+        if (!HEAD_ENCHANT_CACHE.containsKey(key)) {
+            HeadMaterial h = MaterialRegistry.getHead(head);
+            RodMaterial r = MaterialRegistry.getRod(rod);
+            if (h != null && r != null) {
+                HEAD_ENCHANT_CACHE.put(key, h.getEnchantability());
+                ROD_ENCHANT_CACHE.put(key, r.getEnchantabilityMultiplier());
+            }
+        }
+    }
+
+    private static void ensureMiningCache(String head, String rod) {
+        String key = getKey(head, rod);
+        if (!HEAD_MINING_CACHE.containsKey(key)) {
+            HeadMaterial h = MaterialRegistry.getHead(head);
+            RodMaterial r = MaterialRegistry.getRod(rod);
+            if (h != null && r != null) {
+                HEAD_MINING_CACHE.put(key, h.getMiningSpeed());
+                ROD_MINING_CACHE.put(key, r.getSpeedMultiplier());
+            }
+        }
+    }
 
     private static String getHeadMaterial(ItemStack stack) {
         NBTTagCompound tag = stack.getTagCompound();
@@ -122,52 +203,60 @@ public class ModularToolHelper {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
         if (headName == null || rodName == null) return baseDamage;
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return baseDamage;
-        float base = (baseDamage + head.getAttackDamage() * toolFactor) * rod.getDamageMultiplier();
-        return base + getTraitDamage(stack);
+        ensureDamageCache(headName, rodName, toolFactor);
+        String key = getKey(headName, rodName, toolFactor);
+        Float headBonus = HEAD_DAMAGE_CACHE.get(key);
+        Float rodMult = ROD_DAMAGE_CACHE.get(key);
+        if (headBonus == null || rodMult == null) return baseDamage;
+        return (baseDamage + headBonus) * rodMult + getTraitDamage(stack);
     }
 
     public static float getCachedSpeed(ItemStack stack, float baseSpeed) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
         if (headName == null || rodName == null) return baseSpeed;
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return baseSpeed;
-        float base = (baseSpeed + head.getAttackSpeed()) * rod.getAttackSpeedMultiplier();
-        return base + getTraitSpeed(stack);
+        ensureSpeedCache(headName, rodName);
+        String key = getKey(headName, rodName);
+        Float headSpeed = HEAD_SPEED_CACHE.get(key);
+        Float rodSpeed = ROD_SPEED_CACHE.get(key);
+        if (headSpeed == null || rodSpeed == null) return baseSpeed;
+        return (baseSpeed + headSpeed) * rodSpeed + getTraitSpeed(stack);
     }
 
     public static int getCachedDurability(ItemStack stack, int baseDurability) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
         if (headName == null || rodName == null) return baseDurability;
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return baseDurability;
-        int base = (int) ((baseDurability + head.getDurability()) * rod.getDurabilityMultiplier());
-        return base + getTraitDurability(stack);
+        ensureDurabilityCache(headName, rodName);
+        String key = getKey(headName, rodName);
+        Integer headDura = HEAD_DURABILITY_CACHE.get(key);
+        Float rodDura = ROD_DURABILITY_CACHE.get(key);
+        if (headDura == null || rodDura == null) return baseDurability;
+        return (int) ((baseDurability + headDura) * rodDura) + getTraitDurability(stack);
     }
 
     public static int getCachedEnchant(ItemStack stack) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);
         if (headName == null || rodName == null) return 0;
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
-        if (head == null || rod == null) return 0;
-        int base = (int) (head.getEnchantability() * rod.getEnchantabilityMultiplier());
-        return base + getTraitEnchant(stack);
+        ensureEnchantCache(headName, rodName);
+        String key = getKey(headName, rodName);
+        Integer headEnchant = HEAD_ENCHANT_CACHE.get(key);
+        Float rodEnchant = ROD_ENCHANT_CACHE.get(key);
+        if (headEnchant == null || rodEnchant == null) return 0;
+        return (int) (headEnchant * rodEnchant) + getTraitEnchant(stack);
     }
 
     public static float getDestroySpeed(ItemStack stack, float baseSpeed) {
-        HeadMaterial head = getHead(stack);
-        RodMaterial rod = getRod(stack);
-        if (head == null || rod == null) return baseSpeed;
-        float base = (baseSpeed + head.getMiningSpeed()) * rod.getSpeedMultiplier();
-        return base + getTraitMining(stack);
+        String headName = getHeadMaterial(stack);
+        String rodName = getRodMaterial(stack);
+        if (headName == null || rodName == null) return baseSpeed;
+        ensureMiningCache(headName, rodName);
+        String key = getKey(headName, rodName);
+        Float headMining = HEAD_MINING_CACHE.get(key);
+        Float rodMining = ROD_MINING_CACHE.get(key);
+        if (headMining == null || rodMining == null) return baseSpeed;
+        return (baseSpeed + headMining) * rodMining + getTraitMining(stack);
     }
 
     public static int getHarvestLevel(ItemStack stack, String toolClass) {

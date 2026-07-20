@@ -13,6 +13,7 @@ casualcreations.material.iron=铁
 casualcreations.material.gold=金
 casualcreations.material.diamond=钻石
 casualcreations.material.obsidian=黑曜石
+casualcreations.material.flint=燧石
 item.casualcreations.golden_tome.name=黄金宝典
 item.casualcreations.golden_tome.tooltip=在铁砧上与工具合成，可叠加指定附魔并突破等级上限
 casualcreations.tooltip.damage=攻击伤害

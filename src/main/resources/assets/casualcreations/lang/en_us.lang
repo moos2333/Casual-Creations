@@ -13,6 +13,7 @@ casualcreations.material.iron=Iron
 casualcreations.material.gold=Gold
 casualcreations.material.diamond=Diamond
 casualcreations.material.obsidian=Obsidian
+casualcreations.material.flint=Flint
 item.casualcreations.golden_tome.name=Golden Tome
 item.casualcreations.golden_tome.tooltip=Combine with a tool in an anvil to stack certain enchantments beyond limits
 casualcreations.tooltip.damage=Attack Damage
