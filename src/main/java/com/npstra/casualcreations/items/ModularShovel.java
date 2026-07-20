@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.util.text.TextFormatting;
 import java.util.List;
 
 public class ModularShovel extends ItemSpade implements IModularTool {
@@ -69,6 +68,6 @@ public class ModularShovel extends ItemSpade implements IModularTool {
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        ModularToolHelper.addTooltip(stack, tooltip, flag.isAdvanced(), 1.5f, 1.0f, 0.9f);
+        ModularToolHelper.addTraitLines(stack, tooltip);
     }
 }

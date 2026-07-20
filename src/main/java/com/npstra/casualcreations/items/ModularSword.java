@@ -9,7 +9,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.util.text.TextFormatting;
 import java.util.List;
 
 public class ModularSword extends ItemSword implements IModularTool {
@@ -54,6 +53,6 @@ public class ModularSword extends ItemSword implements IModularTool {
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        ModularToolHelper.addTooltip(stack, tooltip, flag.isAdvanced(), 3.0f, 1.6f, 1.0f);
+        ModularToolHelper.addTraitLines(stack, tooltip);
     }
 }

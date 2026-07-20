@@ -304,14 +304,6 @@ public class ModularToolHelper {
         return false;
     }
 
-    public static void addTooltip(ItemStack stack, List<String> tooltip, boolean advanced, float baseDamage, float baseSpeed, float toolFactor) {
-        addTraitLines(stack, tooltip);
-        float damage = getCachedDamage(stack, baseDamage, toolFactor) + 1.0f;
-        float speed = getCachedSpeed(stack, baseSpeed);
-        tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.damage") + ": " + String.format("%.1f", damage));
-        tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.speed") + ": " + String.format("%.1f", speed));
-    }
-
     public static void addTraitLines(ItemStack stack, List<String> tooltip) {
         String headName = getHeadMaterial(stack);
         String rodName = getRodMaterial(stack);

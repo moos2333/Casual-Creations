@@ -21,11 +21,6 @@ public class ModularKnife extends ItemSword implements IModularTool {
     }
 
     @Override
-    public boolean shouldHideFlags() {
-        return false;
-    }
-
-    @Override
     public String getItemStackDisplayName(ItemStack stack) {
         String head = getHeadMaterial(stack);
         if (head != null) {

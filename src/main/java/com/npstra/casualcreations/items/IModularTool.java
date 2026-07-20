@@ -12,10 +12,6 @@ public interface IModularTool {
     String TAG_TRAIT_MINING = "TraitMining";
     String TAG_TRAIT_ENCHANT = "TraitEnchant";
 
-    default boolean shouldHideFlags() {
-        return true;
-    }
-
     default void setMaterials(ItemStack stack, String head, String rod) {
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null) {
@@ -24,9 +20,6 @@ public interface IModularTool {
         }
         tag.setString(TAG_HEAD, head);
         tag.setString(TAG_ROD, rod);
-        if (shouldHideFlags()) {
-            tag.setInteger("HideFlags", 2);
-        }
         ModularToolHelper.applyTraits(stack, head, rod);
     }
 
