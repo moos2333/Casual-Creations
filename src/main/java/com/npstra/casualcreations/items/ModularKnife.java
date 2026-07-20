@@ -3,12 +3,15 @@ package com.npstra.casualcreations.items;
 import com.google.common.collect.Multimap;
 import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.materials.HeadMaterial;
-import com.npstra.casualcreations.materials.MaterialRegistry;
 import com.npstra.casualcreations.materials.RodMaterial;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
+import net.minecraft.client.util.ITooltipFlag;
+import java.util.List;
 
 public class ModularKnife extends ItemSword implements IModularTool {
     public ModularKnife() {
@@ -18,13 +21,16 @@ public class ModularKnife extends ItemSword implements IModularTool {
     }
 
     @Override
+    public boolean shouldHideFlags() {
+        return false;
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack stack) {
         String head = getHeadMaterial(stack);
         if (head != null) {
-            String headName = net.minecraft.util.text.translation.I18n.translateToLocal("casualcreations.material." + head);
-            if (!headName.isEmpty()) {
-                return headName + net.minecraft.util.text.translation.I18n.translateToLocal(this.getTranslationKey() + ".name");
-            }
+            String name = I18n.translateToLocal("casualcreations.material." + head);
+            if (!name.isEmpty()) return name + I18n.translateToLocal(this.getTranslationKey() + ".name");
         }
         return super.getItemStackDisplayName(stack);
     }
@@ -42,67 +48,49 @@ public class ModularKnife extends ItemSword implements IModularTool {
     }
 
     private float calculateDamage(ItemStack stack) {
-        String headName = getHeadMaterial(stack);
-        String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 1.5f;
-
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
+        HeadMaterial head = ModularToolHelper.getHead(stack);
+        RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 1.5f;
-
         float base = 2.5f;
-        float headBonus = head.getAttackDamage();
-        float toolFactor = 0.8f;
-        float rodMult = rod.getDamageMultiplier();
-
-        return (base + headBonus * toolFactor) * (rodMult - 0.2f);
+        float headBonus = head.getAttackDamage() * 0.8f;
+        float rodMult = rod.getDamageMultiplier() - 0.2f;
+        return (base + headBonus) * rodMult;
     }
 
     private float calculateAttackSpeed(ItemStack stack) {
-        String headName = getHeadMaterial(stack);
-        String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 2.0f;
-
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
+        HeadMaterial head = ModularToolHelper.getHead(stack);
+        RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 2.0f;
-
-        float base = 2.0f;
-        float headBonus = head.getAttackSpeed();
-        float rodMult = rod.getAttackSpeedMultiplier();
-
-        return (base + headBonus) * rodMult;
+        return (2.0f + head.getAttackSpeed()) * rod.getAttackSpeedMultiplier();
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        String headName = getHeadMaterial(stack);
-        String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 20;
-
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
+        HeadMaterial head = ModularToolHelper.getHead(stack);
+        RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 20;
-
         int base = 20;
         int headBonus = head.getDurability();
-        float rodMult = rod.getDurabilityMultiplier();
-
-        return (int) ((base + headBonus) * (rodMult - 0.2f));
+        float rodMult = rod.getDurabilityMultiplier() - 0.2f;
+        return (int) ((base + headBonus) * rodMult);
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
-        String headName = getHeadMaterial(stack);
-        String rodName = getRodMaterial(stack);
-        if (headName == null || rodName == null) return 0;
-
-        HeadMaterial head = MaterialRegistry.getHead(headName);
-        RodMaterial rod = MaterialRegistry.getRod(rodName);
+        HeadMaterial head = ModularToolHelper.getHead(stack);
+        RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 0;
+        return (int) (head.getEnchantability() * rod.getEnchantabilityMultiplier());
+    }
 
-        int base = head.getEnchantability();
-        float mult = rod.getEnchantabilityMultiplier();
-        return (int) (base * mult);
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return ModularToolHelper.isRepairable(toRepair, repair);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(stack, world, tooltip, flag);
+        ModularToolHelper.addTraitLines(stack, tooltip);
     }
 }

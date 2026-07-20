@@ -10,8 +10,10 @@ public class HeadMaterial {
     private final int enchantability;
     private final int harvestLevel;
     private final String item;
+    private final String oreDict;
+    private final String trait;
 
-    public HeadMaterial(String name, int color, int durability, float attackDamage, float attackSpeed, float miningSpeed, int enchantability, int harvestLevel, String item) {
+    public HeadMaterial(String name, int color, int durability, float attackDamage, float attackSpeed, float miningSpeed, int enchantability, int harvestLevel, String item, String oreDict, String trait) {
         this.name = name;
         this.color = color;
         this.durability = durability;
@@ -21,6 +23,8 @@ public class HeadMaterial {
         this.enchantability = enchantability;
         this.harvestLevel = harvestLevel;
         this.item = item;
+        this.oreDict = oreDict;
+        this.trait = trait;
     }
 
     public String getName() { return name; }
@@ -32,4 +36,6 @@ public class HeadMaterial {
     public int getEnchantability() { return enchantability; }
     public int getHarvestLevel() { return harvestLevel; }
     public String getItem() { return item; }
+    public String getOreDict() { return oreDict; }
+    public String getTrait() { return trait; }
 }

@@ -14,34 +14,30 @@ import java.util.Map;
 
 public class MaterialLoader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final String[] HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian"};
+    private static final String[] ROD_MATERIALS = {"wood", "bone", "blaze", "emerald"};
 
     public static void loadMaterials() {
         Map<String, HeadMaterial> heads = new HashMap<>();
         Map<String, RodMaterial> rods = new HashMap<>();
+
+        loadHeadsFromAssets(heads);
+        loadRodsFromAssets(rods);
 
         if (ConfigHandler.enableExternalMaterials) {
             loadHeadsFromConfig(heads);
             loadRodsFromConfig(rods);
         }
 
-        loadHeadsFromAssets(heads);
-        loadRodsFromAssets(rods);
-
         if (heads.isEmpty()) {
-            heads.put("wood", new HeadMaterial("wood", 0x9B6A3B, 30, 0.0f, 0.0f, 2.0f, 15, 0, "minecraft:planks"));
-            heads.put("stone", new HeadMaterial("stone", 0xC0C0C0, 96, 1.0f, -0.1f, 4.0f, 5, 1, "minecraft:cobblestone"));
-            heads.put("iron", new HeadMaterial("iron", 0xF8F8F8, 226, 2.0f, 0.0f, 5.0f, 14, 2, "minecraft:iron_ingot"));
-            heads.put("gold", new HeadMaterial("gold", 0xFFE86E, 2, 0.0f, 0.2f, 12.0f, 22, 0, "minecraft:gold_ingot"));
-            heads.put("diamond", new HeadMaterial("diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18, 3, "minecraft:diamond"));
-            heads.put("obsidian", new HeadMaterial("obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3, 3, "minecraft:obsidian"));
-            generateDefaultHeadFiles(heads);
+            heads.putAll(getDefaultHeads());
         }
         if (rods.isEmpty()) {
-            rods.put("wood", new RodMaterial("wood", 0x9B6A3B, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, "minecraft:stick"));
-            rods.put("bone", new RodMaterial("bone", 0xF0F0F0, 0.9f, 1.1f, 1.1f, 1.05f, 1.1f, "minecraft:bone"));
-            rods.put("blaze", new RodMaterial("blaze", 0xFFA500, 1.1f, 1.2f, 0.9f, 1.15f, 0.9f, "minecraft:blaze_rod"));
-            rods.put("emerald", new RodMaterial("emerald", 0x50C878, 1.4f, 0.9f, 0.9f, 1.0f, 1.5f, "minecraft:emerald"));
-            generateDefaultRodFiles(rods);
+            rods.putAll(getDefaultRods());
+        }
+
+        if (ConfigHandler.enableExternalMaterials) {
+            generateDefaultFiles(heads, rods);
         }
 
         MaterialRegistry.setHeads(heads);
@@ -49,29 +45,33 @@ public class MaterialLoader {
     }
 
     private static void loadHeadsFromAssets(Map<String, HeadMaterial> map) {
-        String[] materials = {"wood", "stone", "iron", "gold", "diamond", "obsidian"};
-        for (String name : materials) {
+        for (String name : HEAD_MATERIALS) {
             try {
                 String path = "/assets/" + CasualCreations.MODID + "/materials/heads/" + name + ".json";
-                try (InputStreamReader reader = new InputStreamReader(CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
+                try (InputStreamReader reader = new InputStreamReader(
+                        CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
                     HeadMaterial material = GSON.fromJson(reader, HeadMaterial.class);
-                    map.put(name, material);
+                    if (material.getName() != null) {
+                        map.put(name, material);
+                    }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }
 
     private static void loadRodsFromAssets(Map<String, RodMaterial> map) {
-        String[] materials = {"wood", "bone", "blaze", "emerald"};
-        for (String name : materials) {
+        for (String name : ROD_MATERIALS) {
             try {
                 String path = "/assets/" + CasualCreations.MODID + "/materials/rods/" + name + ".json";
-                try (InputStreamReader reader = new InputStreamReader(CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
+                try (InputStreamReader reader = new InputStreamReader(
+                        CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
                     RodMaterial material = GSON.fromJson(reader, RodMaterial.class);
-                    map.put(name, material);
+                    if (material.getName() != null) {
+                        map.put(name, material);
+                    }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -87,8 +87,7 @@ public class MaterialLoader {
                 if (material.getName() != null) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
     }
@@ -104,37 +103,53 @@ public class MaterialLoader {
                 if (material.getName() != null) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
     }
 
-    private static void generateDefaultHeadFiles(Map<String, HeadMaterial> defaults) {
+    private static Map<String, HeadMaterial> getDefaultHeads() {
+        Map<String, HeadMaterial> defaults = new HashMap<>();
+        defaults.put("wood", new HeadMaterial("wood", 0x9B6A3B, 30, 0.0f, 0.0f, 2.0f, 15, 0, "minecraft:planks", "plankWood", "tough"));
+        defaults.put("stone", new HeadMaterial("stone", 0xC0C0C0, 96, 1.0f, -0.1f, 4.0f, 5, 1, "minecraft:cobblestone", "stone", "efficient"));
+        defaults.put("iron", new HeadMaterial("iron", 0xF8F8F8, 226, 2.0f, 0.0f, 5.0f, 14, 2, "minecraft:iron_ingot", "ingotIron", "tough"));
+        defaults.put("gold", new HeadMaterial("gold", 0xFFE86E, 2, 0.0f, 0.2f, 12.0f, 22, 0, "minecraft:gold_ingot", "ingotGold", "magic"));
+        defaults.put("diamond", new HeadMaterial("diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18, 3, "minecraft:diamond", "gemDiamond", "sharp"));
+        defaults.put("obsidian", new HeadMaterial("obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3, 3, "minecraft:obsidian", "obsidian", "light"));
+        return defaults;
+    }
+
+    private static Map<String, RodMaterial> getDefaultRods() {
+        Map<String, RodMaterial> defaults = new HashMap<>();
+        defaults.put("wood", new RodMaterial("wood", 0x9B6A3B, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, "minecraft:stick", "stickWood", "tough"));
+        defaults.put("bone", new RodMaterial("bone", 0xF0F0F0, 0.9f, 1.05f, 1.1f, 1.05f, 1.1f, "minecraft:bone", "bone", "light"));
+        defaults.put("blaze", new RodMaterial("blaze", 0xFFA500, 1.1f, 1.2f, 0.9f, 1.15f, 0.9f, "minecraft:blaze_rod", "blazeRod", "sharp"));
+        defaults.put("emerald", new RodMaterial("emerald", 0x50C878, 1.4f, 0.9f, 0.9f, 1.0f, 1.5f, "minecraft:emerald", "gemEmerald", "magic"));
+        return defaults;
+    }
+
+    private static void generateDefaultFiles(Map<String, HeadMaterial> heads, Map<String, RodMaterial> rods) {
         File headsDir = new File(ConfigHandler.configDir, "materials/head");
+        File rodsDir = new File(ConfigHandler.configDir, "materials/rod");
         headsDir.mkdirs();
-        for (Map.Entry<String, HeadMaterial> entry : defaults.entrySet()) {
+        rodsDir.mkdirs();
+
+        for (Map.Entry<String, HeadMaterial> entry : heads.entrySet()) {
             File file = new File(headsDir, entry.getKey() + ".json");
             if (!file.exists()) {
                 try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
                     GSON.toJson(entry.getValue(), writer);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
             }
         }
-    }
 
-    private static void generateDefaultRodFiles(Map<String, RodMaterial> defaults) {
-        File rodsDir = new File(ConfigHandler.configDir, "materials/rod");
-        rodsDir.mkdirs();
-        for (Map.Entry<String, RodMaterial> entry : defaults.entrySet()) {
+        for (Map.Entry<String, RodMaterial> entry : rods.entrySet()) {
             File file = new File(rodsDir, entry.getKey() + ".json");
             if (!file.exists()) {
                 try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
                     GSON.toJson(entry.getValue(), writer);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
             }
         }

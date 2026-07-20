@@ -3,14 +3,13 @@ package com.npstra.casualcreations.recipes;
 import com.npstra.casualcreations.items.IModularTool;
 import com.npstra.casualcreations.items.ModItems;
 import com.npstra.casualcreations.materials.MaterialRegistry;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.HashMap;
@@ -24,10 +23,8 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
         PATTERNS.put("sword", new ToolPattern("sword", new String[]{" M ", " M ", " R "}, null, 2, 1, () -> ModItems.SWORD));
         PATTERNS.put("pickaxe", new ToolPattern("pickaxe", new String[]{"MMM", " R ", " R "}, null, 3, 2, () -> ModItems.PICKAXE));
         PATTERNS.put("axe", new ToolPattern("axe", new String[]{"MM ", "MR ", " R "}, null, 3, 2, () -> ModItems.AXE));
-        PATTERNS.put("axe_right", new ToolPattern("axe_right", new String[]{" MM", " RM", " R "}, null, 3, 2, () -> ModItems.AXE));
         PATTERNS.put("shovel", new ToolPattern("shovel", new String[]{" M ", " R ", " R "}, null, 1, 2, () -> ModItems.SHOVEL));
         PATTERNS.put("hoe", new ToolPattern("hoe", new String[]{"MM ", " R ", " R "}, null, 2, 2, () -> ModItems.HOE));
-        PATTERNS.put("hoe_right", new ToolPattern("hoe_right", new String[]{" MM", " R ", " R "}, null, 2, 2, () -> ModItems.HOE));
         PATTERNS.put("knife", new ToolPattern("knife", new String[]{"   ", " M ", " R "}, new String[]{" M", " R"}, 1, 1, () -> ModItems.KNIFE));
         PATTERNS.put("battleaxe", new ToolPattern("battleaxe", new String[]{"MMM", "MRM", " R "}, null, 5, 2, () -> ModItems.BATTLEAXE));
     }
@@ -134,62 +131,82 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
         for (Map.Entry<String, ToolPattern> entry : PATTERNS.entrySet()) {
             ToolPattern pattern = entry.getValue();
             if (pattern.shape == null) continue;
-            String headMaterial = null;
-            String rodMaterial = null;
-            int headCount = 0;
-            int rodCount = 0;
-            boolean match = true;
 
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 3; col++) {
-                    int index = row * 3 + col;
-                    if (index == 6) continue;
-                    char c = pattern.shape[row].charAt(col);
-                    ItemStack stack = inv.getStackInSlot(index);
-                    if (c == 'M') {
-                        if (stack.isEmpty()) { match = false; break; }
-                        String mat = getHeadMaterial(stack);
-                        if (mat == null) { match = false; break; }
-                        if (headMaterial == null) headMaterial = mat;
-                        else if (!headMaterial.equals(mat)) { match = false; break; }
-                        headCount++;
-                    } else if (c == 'R') {
-                        if (stack.isEmpty()) { match = false; break; }
-                        String mat = getRodMaterial(stack);
-                        if (mat == null) { match = false; break; }
-                        if (rodMaterial == null) rodMaterial = mat;
-                        else if (!rodMaterial.equals(mat)) { match = false; break; }
-                        rodCount++;
-                    } else {
-                        if (!stack.isEmpty()) { match = false; break; }
-                    }
+            ToolResult result = tryMatch(inv, pattern.shape, pattern);
+            if (result != null) return result;
+
+            String[] flipped = new String[3];
+            for (int i = 0; i < 3; i++) {
+                flipped[i] = new StringBuilder(pattern.shape[i]).reverse().toString();
+            }
+            result = tryMatch(inv, flipped, pattern);
+            if (result != null) return result;
+        }
+        return null;
+    }
+
+    private ToolResult tryMatch(InventoryCrafting inv, String[] shape, ToolPattern pattern) {
+        String headMaterial = null;
+        String rodMaterial = null;
+        int headCount = 0;
+        int rodCount = 0;
+        boolean match = true;
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                int index = row * 3 + col;
+                if (index == 6) continue;
+                char c = shape[row].charAt(col);
+                ItemStack stack = inv.getStackInSlot(index);
+                if (c == 'M') {
+                    if (stack.isEmpty()) { match = false; break; }
+                    String mat = getHeadMaterial(stack);
+                    if (mat == null) { match = false; break; }
+                    if (headMaterial == null) headMaterial = mat;
+                    else if (!headMaterial.equals(mat)) { match = false; break; }
+                    headCount++;
+                } else if (c == 'R') {
+                    if (stack.isEmpty()) { match = false; break; }
+                    String mat = getRodMaterial(stack);
+                    if (mat == null) { match = false; break; }
+                    if (rodMaterial == null) rodMaterial = mat;
+                    else if (!rodMaterial.equals(mat)) { match = false; break; }
+                    rodCount++;
+                } else {
+                    if (!stack.isEmpty()) { match = false; break; }
                 }
-                if (!match) break;
             }
+            if (!match) break;
+        }
 
-            if (match && headCount == pattern.headCount && rodCount == pattern.rodCount && headMaterial != null && rodMaterial != null) {
-                return new ToolResult(pattern.toolSupplier.get(), headMaterial, rodMaterial);
-            }
+        if (match && headCount == pattern.headCount && rodCount == pattern.rodCount && headMaterial != null && rodMaterial != null) {
+            return new ToolResult(pattern.toolSupplier.get(), headMaterial, rodMaterial);
         }
         return null;
     }
 
     private String getHeadMaterial(ItemStack stack) {
         String regName = stack.getItem().getRegistryName().toString();
-        String fromMap = MaterialRegistry.getHeadNameByItem(regName);
-        if (fromMap != null) return fromMap;
-        for (String name : MaterialRegistry.getHeads().keySet()) {
-            if (regName.contains(name)) return name;
+        String mat = MaterialRegistry.getHeadNameByItem(regName);
+        if (mat != null) return mat;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids) {
+            String ore = OreDictionary.getOreName(id);
+            String mapped = MaterialRegistry.getHeadNameByOreDict(ore);
+            if (mapped != null) return mapped;
         }
         return null;
     }
 
     private String getRodMaterial(ItemStack stack) {
         String regName = stack.getItem().getRegistryName().toString();
-        String fromMap = MaterialRegistry.getRodNameByItem(regName);
-        if (fromMap != null) return fromMap;
-        for (String name : MaterialRegistry.getRods().keySet()) {
-            if (regName.contains(name)) return name;
+        String mat = MaterialRegistry.getRodNameByItem(regName);
+        if (mat != null) return mat;
+        int[] ids = OreDictionary.getOreIDs(stack);
+        for (int id : ids) {
+            String ore = OreDictionary.getOreName(id);
+            String mapped = MaterialRegistry.getRodNameByOreDict(ore);
+            if (mapped != null) return mapped;
         }
         return null;
     }
