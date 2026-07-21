@@ -12,6 +12,10 @@ import net.minecraft.client.util.ITooltipFlag;
 import java.util.List;
 
 public class ModularHoe extends ItemHoe implements IModularTool {
+    private static final float BASE_DAMAGE = 0.0f;
+    private static final float BASE_SPEED = 4.0f;
+    private static final float TOOL_FACTOR = 0.1f;
+
     public ModularHoe() {
         super(ToolMaterial.WOOD);
         setTranslationKey(CasualCreations.MODID + ".hoe");
@@ -31,7 +35,14 @@ public class ModularHoe extends ItemHoe implements IModularTool {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-        ModularToolHelper.applyAttributeModifiers(modifiers, slot, stack, 0.0f, 4.0f, 0.1f);
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            modifiers.removeAll("generic.attackDamage");
+            modifiers.removeAll("generic.attackSpeed");
+            float damage = ModularToolHelper.getCachedDamage(stack, BASE_DAMAGE, TOOL_FACTOR);
+            float speed = ModularToolHelper.getCachedSpeed(stack, BASE_SPEED);
+            modifiers.put("generic.attackDamage", new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", damage, 0));
+            modifiers.put("generic.attackSpeed", new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", speed - 4.0f, 0));
+        }
         return modifiers;
     }
 

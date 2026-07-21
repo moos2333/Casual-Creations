@@ -1,8 +1,8 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "casualcreations:items/hoe_head",
-    "layer1": "casualcreations:items/pickaxe_rod"
+    "layer0": "casualcreations:items/war_hammer_head",
+    "layer1": "casualcreations:items/axe_rod"
   },
   "forge:item_layer": {
     "layers": {

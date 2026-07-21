@@ -2,24 +2,27 @@ package com.npstra.casualcreations.items;
 
 import com.google.common.collect.Multimap;
 import com.npstra.casualcreations.CasualCreations;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.client.util.ITooltipFlag;
 import java.util.List;
 
-public class ModularSword extends ItemSword implements IModularTool {
-    private static final float BASE_DAMAGE = 3.0f;
-    private static final float BASE_SPEED = 1.6f;
+public class ModularWarShovel extends ItemSpade implements IModularTool {
+    private static final float BASE_DAMAGE = 6.0f;
+    private static final float BASE_SPEED = 1.0f;
     private static final float TOOL_FACTOR = 1.0f;
 
-    public ModularSword() {
+    public ModularWarShovel() {
         super(ToolMaterial.WOOD);
-        setTranslationKey(CasualCreations.MODID + ".sword");
-        setRegistryName("sword");
+        setTranslationKey(CasualCreations.MODID + ".war_shovel");
+        setRegistryName("war_shovel");
+        setMaxDamage(0);
     }
 
     @Override
@@ -48,12 +51,25 @@ public class ModularSword extends ItemSword implements IModularTool {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return ModularToolHelper.getCachedDurability(stack, 30);
+        return (int) (ModularToolHelper.getCachedDurability(stack, 60) * 1.3f);
     }
 
     @Override
     public int getItemEnchantability(ItemStack stack) {
         return ModularToolHelper.getCachedEnchant(stack);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        float original = super.getDestroySpeed(stack, state);
+        if (original <= 1.0f) return original;
+        return ModularToolHelper.getDestroySpeed(stack, 3.0f);
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState blockState) {
+        if ("shovel".equals(toolClass)) return ModularToolHelper.getHarvestLevel(stack, toolClass);
+        return -1;
     }
 
     @Override

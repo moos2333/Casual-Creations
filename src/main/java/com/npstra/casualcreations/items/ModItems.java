@@ -15,6 +15,8 @@ public class ModItems {
     public static final Item HOE = new ModularHoe();
     public static final Item KNIFE = new ModularKnife();
     public static final Item BATTLEAXE = new ModularBattleAxe();
+    public static final Item WAR_HAMMER = new ModularWarHammer();
+    public static final Item WAR_SHOVEL = new ModularWarShovel();
     public static final Item GOLDEN_TOME = new ItemGoldenTome();
 
     public static void registerModels() {
@@ -26,6 +28,8 @@ public class ModItems {
         registerModel(HOE, "hoe");
         registerModel(KNIFE, "knife");
         registerModel(BATTLEAXE, "battleaxe");
+        registerModel(WAR_HAMMER, "war_hammer");
+        registerModel(WAR_SHOVEL, "war_shovel");
         if (ConfigHandler.enableGoldenTome) {
             registerModel(GOLDEN_TOME, "golden_tome");
         }

@@ -14,6 +14,10 @@ import net.minecraft.client.util.ITooltipFlag;
 import java.util.List;
 
 public class ModularPickaxe extends ItemPickaxe implements IModularTool {
+    private static final float BASE_DAMAGE = 1.0f;
+    private static final float BASE_SPEED = 1.2f;
+    private static final float TOOL_FACTOR = 0.8f;
+
     public ModularPickaxe() {
         super(ToolMaterial.WOOD);
         setTranslationKey(CasualCreations.MODID + ".pickaxe");
@@ -33,7 +37,14 @@ public class ModularPickaxe extends ItemPickaxe implements IModularTool {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-        ModularToolHelper.applyAttributeModifiers(modifiers, slot, stack, 1.0f, 1.2f, 0.8f);
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            modifiers.removeAll("generic.attackDamage");
+            modifiers.removeAll("generic.attackSpeed");
+            float damage = ModularToolHelper.getCachedDamage(stack, BASE_DAMAGE, TOOL_FACTOR);
+            float speed = ModularToolHelper.getCachedSpeed(stack, BASE_SPEED);
+            modifiers.put("generic.attackDamage", new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", damage, 0));
+            modifiers.put("generic.attackSpeed", new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", speed - 4.0f, 0));
+        }
         return modifiers;
     }
 

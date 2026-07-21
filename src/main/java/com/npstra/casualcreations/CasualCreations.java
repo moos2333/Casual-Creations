@@ -53,6 +53,8 @@ public class CasualCreations {
             event.getRegistry().register(ModItems.HOE);
             event.getRegistry().register(ModItems.KNIFE);
             event.getRegistry().register(ModItems.BATTLEAXE);
+            event.getRegistry().register(ModItems.WAR_HAMMER);
+            event.getRegistry().register(ModItems.WAR_SHOVEL);
             if (ConfigHandler.enableGoldenTome) {
                 event.getRegistry().register(ModItems.GOLDEN_TOME);
             }
@@ -79,7 +81,7 @@ public class CasualCreations {
         @SideOnly(Side.CLIENT)
         public static void registerColors(ColorHandlerEvent.Item event) {
             event.getItemColors().registerItemColorHandler(new com.npstra.casualcreations.client.ItemColorHandler(),
-                    ModItems.SWORD, ModItems.PICKAXE, ModItems.AXE, ModItems.SHOVEL, ModItems.HOE, ModItems.KNIFE, ModItems.BATTLEAXE);
+                    ModItems.SWORD, ModItems.PICKAXE, ModItems.AXE, ModItems.SHOVEL, ModItems.HOE, ModItems.KNIFE, ModItems.BATTLEAXE, ModItems.WAR_HAMMER, ModItems.WAR_SHOVEL, ModItems.WAR_SHOVEL);
         }
     }
 }

@@ -47,18 +47,18 @@ public class ModularBattleAxe extends ItemAxe implements IModularTool {
     private float calculateDamage(ItemStack stack) {
         HeadMaterial head = ModularToolHelper.getHead(stack);
         RodMaterial rod = ModularToolHelper.getRod(stack);
-        if (head == null || rod == null) return 5.0f;
-        float base = 5.0f;
-        float headBonus = head.getAttackDamage();
-        float rodMult = rod.getDamageMultiplier() + 0.3f;
+        if (head == null || rod == null) return 6.0f;
+        float base = 6.0f;
+        float headBonus = head.getAttackDamage() * 2.0f;
+        float rodMult = rod.getDamageMultiplier();
         return (base + headBonus) * rodMult;
     }
 
     private float calculateAttackSpeed(ItemStack stack) {
         HeadMaterial head = ModularToolHelper.getHead(stack);
         RodMaterial rod = ModularToolHelper.getRod(stack);
-        if (head == null || rod == null) return 1.0f;
-        return (1.0f + head.getAttackSpeed()) * rod.getAttackSpeedMultiplier();
+        if (head == null || rod == null) return 0.9f;
+        return (0.9f + head.getAttackSpeed()) * rod.getAttackSpeedMultiplier();
     }
 
     @Override
@@ -67,9 +67,9 @@ public class ModularBattleAxe extends ItemAxe implements IModularTool {
         RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 30;
         int base = 30;
-        int headBonus = head.getDurability();
-        float rodMult = rod.getDurabilityMultiplier() + 0.3f;
-        return (int) ((base + headBonus) * rodMult);
+        int headBonus = (int) (head.getDurability());
+        float rodMult = rod.getDurabilityMultiplier();
+        return (int) ((base + headBonus) * rodMult * 1.5f);
     }
 
     @Override

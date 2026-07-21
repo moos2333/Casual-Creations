@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class MaterialLoader {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final String[] HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "flint"};
-    private static final String[] ROD_MATERIALS = {"wood", "bone", "blaze", "emerald", "gold"};
+    private static final String[] HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "flint", "chorus", "netherbrick"};
+    private static final String[] ROD_MATERIALS = {"wood", "bone", "blaze", "emerald", "gold", "chorus"};
 
     public static void loadMaterials() {
         Map<String, HeadMaterial> heads = new HashMap<>();
@@ -113,6 +113,8 @@ public class MaterialLoader {
         defaults.put("diamond", new HeadMaterial("diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18, 3, "minecraft:diamond", "gemDiamond", "sharp"));
         defaults.put("obsidian", new HeadMaterial("obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3, 3, "minecraft:obsidian", "obsidian", "light"));
         defaults.put("flint", new HeadMaterial("flint", 0x6B6B6B, 100, 1.0f, -0.2f, 2.5f, 8, 1, "minecraft:flint", "flint", "sharp"));
+        defaults.put("chorus", new HeadMaterial("chorus", 0x9B6F9B, 300, 2.0f, 0.1f, 5.0f, 12, 2, "minecraft:chorus_fruit_popped", null, "magic"));
+        defaults.put("netherbrick", new HeadMaterial("netherbrick", 0x3E1E24, 200, 2.0f, -0.2f, 4.0f, 4, 1, "minecraft:netherbrick", null, "efficient"));
         return defaults;
     }
 
@@ -122,7 +124,8 @@ public class MaterialLoader {
         defaults.put("bone", new RodMaterial("bone", 0xF0F0F0, 0.9f, 1.05f, 1.1f, 1.05f, 1.1f, "minecraft:bone", "bone", "light"));
         defaults.put("blaze", new RodMaterial("blaze", 0xFFA500, 1.1f, 1.2f, 0.9f, 1.15f, 0.9f, "minecraft:blaze_rod", "blazeRod", "sharp"));
         defaults.put("emerald", new RodMaterial("emerald", 0x50C878, 1.4f, 0.9f, 0.9f, 1.0f, 1.5f, "minecraft:emerald", "gemEmerald", "magic"));
-        defaults.put("gold", new RodMaterial("gold", 0xFFD700, 0.4f, 0.8f, 1.4f, 1.5f, 0.8f, "minecraft:gold_ingot", "ingotGold", "magic"));
+        defaults.put("gold", new RodMaterial("gold", 0xFFD700, 0.4f, 0.8f, 1.4f, 1.5f, 1.4f, "minecraft:gold_ingot", "ingotGold", "magic"));
+        defaults.put("chorus", new RodMaterial("chorus", 0x9B59B6, 1.05f, 1.05f, 1.05f, 1.05f, 1.05f, "minecraft:chorus_fruit_popped", null, "magic"));
         return defaults;
     }
 

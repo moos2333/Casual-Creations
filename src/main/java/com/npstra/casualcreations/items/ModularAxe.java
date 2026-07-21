@@ -14,6 +14,10 @@ import net.minecraft.client.util.ITooltipFlag;
 import java.util.List;
 
 public class ModularAxe extends ItemAxe implements IModularTool {
+    private static final float BASE_DAMAGE = 6.0f;
+    private static final float BASE_SPEED = 0.8f;
+    private static final float TOOL_FACTOR = 1.0f;
+
     public ModularAxe() {
         super(ToolMaterial.WOOD);
         setTranslationKey(CasualCreations.MODID + ".axe");
@@ -33,7 +37,14 @@ public class ModularAxe extends ItemAxe implements IModularTool {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         Multimap<String, AttributeModifier> modifiers = super.getAttributeModifiers(slot, stack);
-        ModularToolHelper.applyAttributeModifiers(modifiers, slot, stack, 6.0f, 0.8f, 1.0f);
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            modifiers.removeAll("generic.attackDamage");
+            modifiers.removeAll("generic.attackSpeed");
+            float damage = ModularToolHelper.getCachedDamage(stack, BASE_DAMAGE, TOOL_FACTOR);
+            float speed = ModularToolHelper.getCachedSpeed(stack, BASE_SPEED);
+            modifiers.put("generic.attackDamage", new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", damage, 0));
+            modifiers.put("generic.attackSpeed", new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", speed - 4.0f, 0));
+        }
         return modifiers;
     }
 
