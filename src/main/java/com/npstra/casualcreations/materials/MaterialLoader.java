@@ -123,7 +123,7 @@ public class MaterialLoader {
         defaults.put("iron", new HeadMaterial("iron", 0xF8F8F8, 226, 2.0f, 0.0f, 5.0f, 14, 2, "minecraft:iron_ingot", 0, "ingotIron", "tough"));
         defaults.put("gold", new HeadMaterial("gold", 0xFFE86E, 2, 0.0f, 0.2f, 12.0f, 22, 0, "minecraft:gold_ingot", 0, "ingotGold", "magic"));
         defaults.put("diamond", new HeadMaterial("diamond", 0x88F0FF, 1531, 3.0f, 0.1f, 8.0f, 18, 3, "minecraft:diamond", 0, "gemDiamond", "sharp"));
-        defaults.put("obsidian", new HeadMaterial("obsidian", 0x4A3F6E, 142, 2.5f, -0.1f, 6.0f, 3, 3, "minecraft:obsidian", 0, "obsidian", "light"));
+        defaults.put("obsidian", new HeadMaterial("obsidian", 0x3C3056, 142, 2.5f, -0.1f, 6.0f, 3, 3, "minecraft:obsidian", 0, "obsidian", "light"));
         defaults.put("flint", new HeadMaterial("flint", 0x6B6B6B, 100, 1.0f, -0.2f, 2.5f, 8, 1, "minecraft:flint", 0, "flint", "sharp"));
         defaults.put("chorus", new HeadMaterial("chorus", 0x9B6F9B, 300, 2.0f, 0.1f, 5.0f, 12, 2, "minecraft:chorus_fruit_popped", 0, null, "magic"));
         defaults.put("netherbrick", new HeadMaterial("netherbrick", 0x3E1E24, 200, 2.0f, -0.2f, 4.0f, 4, 1, "minecraft:netherbrick", 0, null, "efficient"));
