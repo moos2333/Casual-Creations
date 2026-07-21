@@ -37,7 +37,7 @@ public class MaterialLoader {
         }
 
         if (ConfigHandler.enableExternalMaterials) {
-            generateDefaultFiles(heads, rods);
+            generateDefaultFiles();
         }
 
         MaterialRegistry.setHeads(heads);
@@ -51,7 +51,7 @@ public class MaterialLoader {
                 try (InputStreamReader reader = new InputStreamReader(
                         CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
                     HeadMaterial material = GSON.fromJson(reader, HeadMaterial.class);
-                    if (material.getName() != null) {
+                    if (material.getName() != null && isValidHead(material)) {
                         map.put(name, material);
                     }
                 }
@@ -67,7 +67,7 @@ public class MaterialLoader {
                 try (InputStreamReader reader = new InputStreamReader(
                         CasualCreations.class.getResourceAsStream(path), StandardCharsets.UTF_8)) {
                     RodMaterial material = GSON.fromJson(reader, RodMaterial.class);
-                    if (material.getName() != null) {
+                    if (material.getName() != null && isValidRod(material)) {
                         map.put(name, material);
                     }
                 }
@@ -84,7 +84,7 @@ public class MaterialLoader {
         for (File file : files) {
             try (FileReader reader = new FileReader(file)) {
                 HeadMaterial material = GSON.fromJson(reader, HeadMaterial.class);
-                if (material.getName() != null) {
+                if (material.getName() != null && isValidHead(material)) {
                     map.put(material.getName(), material);
                 }
             } catch (Exception ignored) {
@@ -100,12 +100,20 @@ public class MaterialLoader {
         for (File file : files) {
             try (FileReader reader = new FileReader(file)) {
                 RodMaterial material = GSON.fromJson(reader, RodMaterial.class);
-                if (material.getName() != null) {
+                if (material.getName() != null && isValidRod(material)) {
                     map.put(material.getName(), material);
                 }
             } catch (Exception ignored) {
             }
         }
+    }
+
+    private static boolean isValidHead(HeadMaterial material) {
+        return material.getDurability() > 0 && material.getItem() != null && !material.getItem().isEmpty();
+    }
+
+    private static boolean isValidRod(RodMaterial material) {
+        return material.getDurabilityMultiplier() > 0f && material.getItem() != null && !material.getItem().isEmpty();
     }
 
     private static Map<String, HeadMaterial> getDefaultHeads() {
@@ -133,13 +141,16 @@ public class MaterialLoader {
         return defaults;
     }
 
-    private static void generateDefaultFiles(Map<String, HeadMaterial> heads, Map<String, RodMaterial> rods) {
+    private static void generateDefaultFiles() {
         File headsDir = new File(ConfigHandler.configDir, "materials/head");
         File rodsDir = new File(ConfigHandler.configDir, "materials/rod");
         headsDir.mkdirs();
         rodsDir.mkdirs();
 
-        for (Map.Entry<String, HeadMaterial> entry : heads.entrySet()) {
+        Map<String, HeadMaterial> defaultHeads = getDefaultHeads();
+        Map<String, RodMaterial> defaultRods = getDefaultRods();
+
+        for (Map.Entry<String, HeadMaterial> entry : defaultHeads.entrySet()) {
             File file = new File(headsDir, entry.getKey() + ".json");
             if (!file.exists()) {
                 try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
@@ -149,7 +160,7 @@ public class MaterialLoader {
             }
         }
 
-        for (Map.Entry<String, RodMaterial> entry : rods.entrySet()) {
+        for (Map.Entry<String, RodMaterial> entry : defaultRods.entrySet()) {
             File file = new File(rodsDir, entry.getKey() + ".json");
             if (!file.exists()) {
                 try (java.io.FileWriter writer = new java.io.FileWriter(file)) {

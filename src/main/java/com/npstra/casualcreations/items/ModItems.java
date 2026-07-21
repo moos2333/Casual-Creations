@@ -18,6 +18,7 @@ public class ModItems {
     public static final Item WAR_HAMMER = new ModularWarHammer();
     public static final Item WAR_SHOVEL = new ModularWarShovel();
     public static final Item GOLDEN_TOME = new ItemGoldenTome();
+    public static final Item ARROW = new com.npstra.casualcreations.items.projectile.ModularArrowItem();
 
     public static void registerModels() {
         registerModel(FORGE_CORE, "forge_core");
@@ -33,6 +34,7 @@ public class ModItems {
         if (ConfigHandler.enableGoldenTome) {
             registerModel(GOLDEN_TOME, "golden_tome");
         }
+        registerModel(ARROW, "arrow");
     }
 
     private static void registerModel(Item item, String name) {

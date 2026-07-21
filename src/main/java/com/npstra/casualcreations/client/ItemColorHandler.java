@@ -1,6 +1,8 @@
 package com.npstra.casualcreations.client;
 
 import com.npstra.casualcreations.items.IModularTool;
+import com.npstra.casualcreations.items.ModItems;
+import com.npstra.casualcreations.items.projectile.ModularArrowHelper;
 import com.npstra.casualcreations.materials.HeadMaterial;
 import com.npstra.casualcreations.materials.MaterialRegistry;
 import com.npstra.casualcreations.materials.RodMaterial;
@@ -31,6 +33,12 @@ public class ItemColorHandler implements IItemColor {
                         return rod.getColor();
                     }
                 }
+            }
+        } else if (stack.getItem() == ModItems.ARROW) {
+            if (tintIndex == 0) {
+                return ModularArrowHelper.getArrowHeadColor(stack);
+            } else if (tintIndex == 1) {
+                return ModularArrowHelper.getArrowShaftColor(stack);
             }
         }
         return 0xFFFFFF;

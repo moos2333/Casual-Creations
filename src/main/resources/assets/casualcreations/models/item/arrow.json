@@ -1,0 +1,15 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "casualcreations:items/arrow_head",
+    "layer1": "casualcreations:items/arrow_shaft",
+    "layer2": "casualcreations:items/arrow_fletch"
+  },
+  "forge:item_layer": {
+    "layers": {
+      "0": { "tintindex": 0 },
+      "1": { "tintindex": 1 },
+      "2": { "tintindex": -1 }
+    }
+  }
+}
