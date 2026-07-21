@@ -21,6 +21,7 @@ casualcreations.material.chorus=Chorus
 casualcreations.material.netherbrick=Nether Brick
 casualcreations.material.prismarine=Prismarine
 casualcreations.material.shulker=Shulker Shell
+casualcreations.material.quartz=Quartz
 item.casualcreations.golden_tome.name=Golden Tome
 item.casualcreations.golden_tome.tooltip=Combine with a tool in an anvil to stack certain enchantments beyond limits
 casualcreations.tooltip.damage=Attack Damage

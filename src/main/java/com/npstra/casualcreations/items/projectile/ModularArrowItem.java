@@ -68,7 +68,7 @@ public class ModularArrowItem extends ItemArrow implements IModularArrow {
         } else if (speedPercent < 0) {
             speedDisplay = TextFormatting.RED + String.format("%.1f", speedPercent) + "%";
         } else {
-            speedDisplay = TextFormatting.GRAY + "0.0%";
+            speedDisplay = TextFormatting.GRAY + "+0.0%";
         }
         tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.damage") + ": " + String.format("%.1f", damage));
         tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.speed") + ": " + speedDisplay);

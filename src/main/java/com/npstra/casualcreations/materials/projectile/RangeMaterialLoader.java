@@ -19,7 +19,7 @@ public class RangeMaterialLoader {
             .registerTypeAdapter(int.class, new ColorAdapter())
             .registerTypeAdapter(Integer.class, new ColorAdapter())
             .create();
-    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "shulker"};
+    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "shulker", "quartz"};
     private static final String[] ARROW_SHAFT_MATERIALS = {"wood", "bone", "blaze", "chorus"};
 
     public static void loadMaterials() {
@@ -119,11 +119,12 @@ public class RangeMaterialLoader {
         defaults.put("wood", new ArrowHeadMaterial("wood", 0.5f, 2.5f, 0.25f, 0x9B6A3B, "minecraft:planks", 0, "plankWood", "recycle"));
         defaults.put("stone", new ArrowHeadMaterial("stone", 1.0f, 2.0f, 0.0f, 0xC0C0C0, "minecraft:cobblestone", 0, "stone", "heavy"));
         defaults.put("iron", new ArrowHeadMaterial("iron", 2.0f, 3.0f, 0.2f, 0xF8F8F8, "minecraft:iron_ingot", 0, "ingotIron", null));
-        defaults.put("gold", new ArrowHeadMaterial("gold", 1.0f, 3.3f, 0.0f, 0xFFE86E, "minecraft:gold_ingot", 0, "ingotGold", "renew"));
+        defaults.put("gold", new ArrowHeadMaterial("gold", 1.0f, 3.3f, -0.1f, 0xFFE86E, "minecraft:gold_ingot", 0, "ingotGold", "renew"));
         defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.70f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
-        defaults.put("obsidian", new ArrowHeadMaterial("obsidian", 2.2f, 2.5f, 0.0f, 0x3C3056, "minecraft:obsidian", 0, "obsidian", "heavy"));
-        defaults.put("prismarine", new ArrowHeadMaterial("prismarine", 2.0f, 2.5f, 0.0f, 0x2D8C7A, "minecraft:prismarine_shard", 0, "gemPrismarine", "swift"));
+        defaults.put("obsidian", new ArrowHeadMaterial("obsidian", 2.5f, 2.5f, 0.0f, 0x3C3056, "minecraft:obsidian", 0, "obsidian", "heavy"));
+        defaults.put("prismarine", new ArrowHeadMaterial("prismarine", 1.5f, 3.1f, 0.0f, 0x73B5AA, "minecraft:prismarine_shard", 0, "gemPrismarine", "swift"));
         defaults.put("shulker", new ArrowHeadMaterial("shulker", 1.5f, 2.5f, 0.80f, 0x976997, "minecraft:shulker_shell", 0, null, "recycle"));
+        defaults.put("quartz", new ArrowHeadMaterial("quartz", 1.8f, 3.0f, 0.0f, 0xE5DFD6, "minecraft:quartz", 0, "gemQuartz", "smash"));
         return defaults;
     }
 
