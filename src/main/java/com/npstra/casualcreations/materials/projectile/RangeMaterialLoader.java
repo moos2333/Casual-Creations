@@ -118,7 +118,7 @@ public class RangeMaterialLoader {
         Map<String, ArrowHeadMaterial> defaults = new HashMap<>();
         defaults.put("wood", new ArrowHeadMaterial("wood", 0.5f, 2.5f, 0.25f, 0x9B6A3B, "minecraft:planks", 0, "plankWood", "recycle"));
         defaults.put("stone", new ArrowHeadMaterial("stone", 1.0f, 2.0f, 0.0f, 0xC0C0C0, "minecraft:cobblestone", 0, "stone", "heavy"));
-        defaults.put("iron", new ArrowHeadMaterial("iron", 2.0f, 3.0f, 0.0f, 0xF8F8F8, "minecraft:iron_ingot", 0, "ingotIron", null));
+        defaults.put("iron", new ArrowHeadMaterial("iron", 2.0f, 3.0f, 0.2f, 0xF8F8F8, "minecraft:iron_ingot", 0, "ingotIron", null));
         defaults.put("gold", new ArrowHeadMaterial("gold", 1.0f, 3.3f, 0.0f, 0xFFE86E, "minecraft:gold_ingot", 0, "ingotGold", "renew"));
         defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.50f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
         return defaults;
