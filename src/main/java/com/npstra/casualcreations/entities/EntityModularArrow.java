@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class EntityModularArrow extends EntityTippedArrow {
     private String headMaterial;
     private String shaftMaterial;
-    private float customVelocity = -1.0f;
+    private float speedMultiplier = 1.0f;
 
     public EntityModularArrow(World world) { super(world); }
     public EntityModularArrow(World world, double x, double y, double z) { super(world, x, y, z); }
@@ -21,16 +21,15 @@ public class EntityModularArrow extends EntityTippedArrow {
 
     public void setHeadMaterial(String head) { this.headMaterial = head; }
     public void setShaftMaterial(String shaft) { this.shaftMaterial = shaft; }
-    public void setCustomVelocity(float velocity) { this.customVelocity = velocity; }
+    public void setSpeedMultiplier(float multiplier) { this.speedMultiplier = multiplier; }
 
     @Override
     public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
-        if (customVelocity >= 0.0f) {
-            super.shoot(shooter, pitch, yaw, p_184547_4_, customVelocity, inaccuracy);
-            customVelocity = -1.0f;
-        } else {
-            super.shoot(shooter, pitch, yaw, p_184547_4_, velocity, inaccuracy);
+        if (speedMultiplier != 1.0f) {
+            velocity *= speedMultiplier;
+            speedMultiplier = 1.0f;
         }
+        super.shoot(shooter, pitch, yaw, p_184547_4_, velocity, inaccuracy);
     }
 
     @Override

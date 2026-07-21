@@ -41,8 +41,8 @@ public class ModularArrowItem extends ItemArrow implements IModularArrow {
         float baseDamage = ModularArrowHelper.getBaseDamage(stack);
         arrow.setDamage(baseDamage);
 
-        float speed = ModularArrowHelper.getFinalSpeed(stack);
-        arrow.setCustomVelocity(speed);
+        float materialSpeed = ModularArrowHelper.getFinalSpeed(stack);
+        arrow.setSpeedMultiplier(materialSpeed / 3.0f);
 
         return arrow;
     }
@@ -61,7 +61,16 @@ public class ModularArrowItem extends ItemArrow implements IModularArrow {
         ModularArrowHelper.addTraitLines(stack, tooltip);
         float damage = (float) ModularArrowHelper.getFinalDamage(stack, 3.0f);
         float speed = ModularArrowHelper.getFinalSpeed(stack);
+        float speedPercent = (speed / 3.0f - 1.0f) * 100f;
+        String speedDisplay;
+        if (speedPercent > 0) {
+            speedDisplay = TextFormatting.GREEN + "+" + String.format("%.1f", speedPercent) + "%";
+        } else if (speedPercent < 0) {
+            speedDisplay = TextFormatting.RED + String.format("%.1f", speedPercent) + "%";
+        } else {
+            speedDisplay = TextFormatting.GRAY + "0.0%";
+        }
         tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.damage") + ": " + String.format("%.1f", damage));
-        tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.speed") + ": " + String.format("%.1f", speed));
+        tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("casualcreations.tooltip.speed") + ": " + speedDisplay);
     }
 }

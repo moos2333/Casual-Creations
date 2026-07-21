@@ -19,8 +19,8 @@ public class RangeMaterialLoader {
             .registerTypeAdapter(int.class, new ColorAdapter())
             .registerTypeAdapter(Integer.class, new ColorAdapter())
             .create();
-    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "chorus"};
-    private static final String[] ARROW_SHAFT_MATERIALS = {"wood", "bone", "blaze"};
+    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "shulker"};
+    private static final String[] ARROW_SHAFT_MATERIALS = {"wood", "bone", "blaze", "chorus"};
 
     public static void loadMaterials() {
         Map<String, ArrowHeadMaterial> heads = new HashMap<>();
@@ -123,7 +123,7 @@ public class RangeMaterialLoader {
         defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.70f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
         defaults.put("obsidian", new ArrowHeadMaterial("obsidian", 2.2f, 2.5f, 0.0f, 0x3C3056, "minecraft:obsidian", 0, "obsidian", "heavy"));
         defaults.put("prismarine", new ArrowHeadMaterial("prismarine", 2.0f, 2.5f, 0.0f, 0x2D8C7A, "minecraft:prismarine_shard", 0, "gemPrismarine", "swift"));
-        defaults.put("chorus", new ArrowHeadMaterial("chorus", 1.5f, 2.5f, 0.80f, 0x9B6F9B, "minecraft:chorus_fruit_popped", 0, null, "recycle"));
+        defaults.put("shulker", new ArrowHeadMaterial("shulker", 1.5f, 2.5f, 0.80f, 0x976997, "minecraft:shulker_shell", 0, null, "recycle"));
         return defaults;
     }
 
@@ -132,6 +132,7 @@ public class RangeMaterialLoader {
         defaults.put("wood", new ArrowShaftMaterial("wood", 1.0f, 1.0f, 0x9B6A3B, "minecraft:stick", 0, "stickWood", "recycle"));
         defaults.put("bone", new ArrowShaftMaterial("bone", 1.0f, 1.08f, 0xF0F0F0, "minecraft:bone", 0, "bone", "swift"));
         defaults.put("blaze", new ArrowShaftMaterial("blaze", 1.15f, 1.0f, 0xFFA500, "minecraft:blaze_rod", 0, "blazeRod", "smash"));
+        defaults.put("chorus", new ArrowShaftMaterial("chorus", 1.05f, 1.05f, 0x9B6F9B, "minecraft:chorus_fruit_popped", 0, null, "recycle"));
         return defaults;
     }
 
