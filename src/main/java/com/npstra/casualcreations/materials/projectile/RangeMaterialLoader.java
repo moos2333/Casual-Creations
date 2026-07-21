@@ -19,7 +19,7 @@ public class RangeMaterialLoader {
             .registerTypeAdapter(int.class, new ColorAdapter())
             .registerTypeAdapter(Integer.class, new ColorAdapter())
             .create();
-    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond"};
+    private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "chorus"};
     private static final String[] ARROW_SHAFT_MATERIALS = {"wood", "bone", "blaze"};
 
     public static void loadMaterials() {
@@ -120,7 +120,10 @@ public class RangeMaterialLoader {
         defaults.put("stone", new ArrowHeadMaterial("stone", 1.0f, 2.0f, 0.0f, 0xC0C0C0, "minecraft:cobblestone", 0, "stone", "heavy"));
         defaults.put("iron", new ArrowHeadMaterial("iron", 2.0f, 3.0f, 0.2f, 0xF8F8F8, "minecraft:iron_ingot", 0, "ingotIron", null));
         defaults.put("gold", new ArrowHeadMaterial("gold", 1.0f, 3.3f, 0.0f, 0xFFE86E, "minecraft:gold_ingot", 0, "ingotGold", "renew"));
-        defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.50f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
+        defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.70f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
+        defaults.put("obsidian", new ArrowHeadMaterial("obsidian", 2.2f, 2.5f, 0.0f, 0x3C3056, "minecraft:obsidian", 0, "obsidian", "heavy"));
+        defaults.put("prismarine", new ArrowHeadMaterial("prismarine", 2.0f, 2.5f, 0.0f, 0x2D8C7A, "minecraft:prismarine_shard", 0, "gemPrismarine", "swift"));
+        defaults.put("chorus", new ArrowHeadMaterial("chorus", 1.5f, 2.5f, 0.80f, 0x9B59B6, "minecraft:popped_chorus_fruit", 0, null, "recycle"));
         return defaults;
     }
 
