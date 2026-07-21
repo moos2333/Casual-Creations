@@ -123,7 +123,7 @@ public class RangeMaterialLoader {
         defaults.put("diamond", new ArrowHeadMaterial("diamond", 3.0f, 3.2f, 0.70f, 0x88F0FF, "minecraft:diamond", 0, "gemDiamond", "smash"));
         defaults.put("obsidian", new ArrowHeadMaterial("obsidian", 2.2f, 2.5f, 0.0f, 0x3C3056, "minecraft:obsidian", 0, "obsidian", "heavy"));
         defaults.put("prismarine", new ArrowHeadMaterial("prismarine", 2.0f, 2.5f, 0.0f, 0x2D8C7A, "minecraft:prismarine_shard", 0, "gemPrismarine", "swift"));
-        defaults.put("chorus", new ArrowHeadMaterial("chorus", 1.5f, 2.5f, 0.80f, 0x9B59B6, "minecraft:popped_chorus_fruit", 0, null, "recycle"));
+        defaults.put("chorus", new ArrowHeadMaterial("chorus", 1.5f, 2.5f, 0.80f, 0x9B59B6, "minecraft:chorus_fruit_popped", 0, null, "recycle"));
         return defaults;
     }
 
