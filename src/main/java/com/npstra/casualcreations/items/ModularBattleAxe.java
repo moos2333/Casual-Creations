@@ -67,7 +67,7 @@ public class ModularBattleAxe extends ItemAxe implements IModularTool {
         RodMaterial rod = ModularToolHelper.getRod(stack);
         if (head == null || rod == null) return 30;
         int base = 30;
-        int headBonus = (int) (head.getDurability());
+        int headBonus = head.getDurability();
         float rodMult = rod.getDurabilityMultiplier();
         return (int) ((base + headBonus) * rodMult * 1.5f);
     }
