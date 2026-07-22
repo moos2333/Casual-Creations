@@ -2,6 +2,7 @@ package com.npstra.casualcreations.items;
 
 import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.config.ConfigHandler;
+import com.npstra.casualcreations.items.projectile.ModularArrowItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,7 +19,7 @@ public class ModItems {
     public static final Item WAR_HAMMER = new ModularWarHammer();
     public static final Item WAR_SHOVEL = new ModularWarShovel();
     public static final Item GOLDEN_TOME = new ItemGoldenTome();
-    public static final Item ARROW = new com.npstra.casualcreations.items.projectile.ModularArrowItem();
+    public static final Item ARROW = new ModularArrowItem();
 
     public static void registerModels() {
         registerModel(FORGE_CORE, "forge_core");
