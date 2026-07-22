@@ -63,7 +63,7 @@ public class ModularWarShovel extends ItemSpade implements IModularTool {
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) return original;
-        return ModularToolHelper.getDestroySpeed(stack, 3.0f);
+        return ModularToolHelper.getDestroySpeed(stack, 0.5f);
     }
 
     @Override
