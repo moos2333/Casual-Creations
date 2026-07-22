@@ -63,7 +63,7 @@ public class ModularWarHammer extends ItemPickaxe implements IModularTool {
     public float getDestroySpeed(ItemStack stack, IBlockState state) {
         float original = super.getDestroySpeed(stack, state);
         if (original <= 1.0f) return original;
-        return ModularToolHelper.getDestroySpeed(stack, 0.5f) * 0.9f;
+        return ModularToolHelper.getDestroySpeed(stack, 0.5f) * 0.8f;
     }
 
     @Override
