@@ -14,6 +14,7 @@ public class ConfigHandler {
     public static boolean enableTomeBookMerge;
     public static String[] tomeBookMergeEnchantments;
     public static int maxEnchantmentLevel;
+    public static boolean enableEmeraldTome = true;
 
     public static void init(FMLPreInitializationEvent event) {
         configDir = new File(event.getModConfigurationDirectory(), CasualCreations.MODID);
@@ -45,6 +46,7 @@ public class ConfigHandler {
                     "List of enchantment IDs allowed when merging tomes/books");
             maxEnchantmentLevel = config.getInt("maxEnchantmentLevel", "goldenTome", 32767, 1, Integer.MAX_VALUE,
                     "Maximum enchantment level allowed on tools/books upgraded with the Golden Tome");
+            enableEmeraldTome = config.getBoolean("enableEmeraldTome", "general", true, "Enable Emerald Tome item");
         } finally {
             if (config.hasChanged()) config.save();
         }

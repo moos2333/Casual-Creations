@@ -1,8 +1,8 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "casualcreations:items/knife_head",
-    "layer1": "casualcreations:items/knife_rod"
+    "layer0": "casualcreations:items/knife/knife_head",
+    "layer1": "casualcreations:items/knife/knife_rod"
   },
   "forge:item_layer": {
     "layers": {

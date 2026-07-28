@@ -1,8 +1,8 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "casualcreations:items/battleaxe_head",
-    "layer1": "casualcreations:items/axe_rod"
+    "layer0": "casualcreations:items/axe/battleaxe_head",
+    "layer1": "casualcreations:items/axe/axe_rod"
   },
   "forge:item_layer": {
     "layers": {

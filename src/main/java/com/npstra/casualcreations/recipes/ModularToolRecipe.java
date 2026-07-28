@@ -29,6 +29,7 @@ public class ModularToolRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
         PATTERNS.put("battleaxe", new ToolPattern("battleaxe", new String[]{"MMM", "MRM", " R "}, null, 5, 2, () -> ModItems.BATTLEAXE));
         PATTERNS.put("war_hammer", new ToolPattern("war_hammer", new String[]{"M M", "MRM", " R "}, null, 4, 2, () -> ModItems.WAR_HAMMER));
         PATTERNS.put("war_shovel", new ToolPattern("war_shovel", new String[]{" M ", "MRM", " R "}, null, 3, 2, () -> ModItems.WAR_SHOVEL));
+        PATTERNS.put("scythe", new ToolPattern("scythe", new String[]{"MMM", "M R", "  R"}, null, 4, 2, () -> ModItems.SCYTHE));
     }
 
     @Override

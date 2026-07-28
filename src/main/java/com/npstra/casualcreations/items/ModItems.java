@@ -20,6 +20,8 @@ public class ModItems {
     public static final Item WAR_SHOVEL = new ModularWarShovel();
     public static final Item GOLDEN_TOME = new ItemGoldenTome();
     public static final Item ARROW = new ModularArrowItem();
+    public static final Item EMERALD_TOME = new ItemEmeraldTome();
+    public static final Item SCYTHE = new ModularScythe();
 
     public static void registerModels() {
         registerModel(FORGE_CORE, "forge_core");
@@ -35,7 +37,11 @@ public class ModItems {
         if (ConfigHandler.enableGoldenTome) {
             registerModel(GOLDEN_TOME, "golden_tome");
         }
+        if (ConfigHandler.enableEmeraldTome) {
+            registerModel(EMERALD_TOME, "emerald_tome");
+        }
         registerModel(ARROW, "arrow");
+        registerModel(SCYTHE, "scythe");
     }
 
     private static void registerModel(Item item, String name) {
