@@ -45,6 +45,7 @@ public class ModularArrowRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
     }
 
     private Result getResult(InventoryCrafting inv) {
+        if (inv.getWidth() < 3 || inv.getHeight() < 3) return null;
         ItemStack core = inv.getStackInSlot(6);
         if (core.isEmpty() || core.getItem() != ModItems.FORGE_CORE) return null;
 
