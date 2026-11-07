@@ -4,20 +4,24 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.config.ConfigHandler;
-import com.npstra.casualcreations.materials.ColorAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RangeMaterialLoader {
+    private static final Logger LOGGER = LogManager.getLogger(CasualCreations.MODID);
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(int.class, new ColorAdapter())
-            .registerTypeAdapter(Integer.class, new ColorAdapter())
             .create();
     private static final String[] ARROW_HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "prismarine", "shulker", "quartz"};
     private static final String[] ARROW_SHAFT_MATERIALS = {"wood", "bone", "blaze", "chorus"};
@@ -53,7 +57,8 @@ public class RangeMaterialLoader {
                         map.put(name, material);
                     }
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load arrow head material from assets: {}", name, e);
             }
         }
     }
@@ -69,7 +74,8 @@ public class RangeMaterialLoader {
                         map.put(name, material);
                     }
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load arrow shaft material from assets: {}", name, e);
             }
         }
     }
@@ -80,12 +86,13 @@ public class RangeMaterialLoader {
         File[] files = headsDir.listFiles((dir, name) -> name.endsWith(".json"));
         if (files == null) return;
         for (File file : files) {
-            try (FileReader reader = new FileReader(file)) {
+            try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
                 ArrowHeadMaterial material = GSON.fromJson(reader, ArrowHeadMaterial.class);
                 if (material.getName() != null && isValidArrowHead(material)) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load arrow head material from config: {}", file.getName(), e);
             }
         }
     }
@@ -96,12 +103,13 @@ public class RangeMaterialLoader {
         File[] files = shaftsDir.listFiles((dir, name) -> name.endsWith(".json"));
         if (files == null) return;
         for (File file : files) {
-            try (FileReader reader = new FileReader(file)) {
+            try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
                 ArrowShaftMaterial material = GSON.fromJson(reader, ArrowShaftMaterial.class);
                 if (material.getName() != null && isValidArrowShaft(material)) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load arrow shaft material from config: {}", file.getName(), e);
             }
         }
     }
@@ -143,27 +151,29 @@ public class RangeMaterialLoader {
         headsDir.mkdirs();
         shaftsDir.mkdirs();
 
-        Map<String, ArrowHeadMaterial> defaultHeads = getDefaultArrowHeads();
-        Map<String, ArrowShaftMaterial> defaultShafts = getDefaultArrowShafts();
-
-        for (Map.Entry<String, ArrowHeadMaterial> entry : defaultHeads.entrySet()) {
-            File file = new File(headsDir, entry.getKey() + ".json");
-            if (!file.exists()) {
-                try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-                    GSON.toJson(entry.getValue(), writer);
-                } catch (Exception ignored) {
-                }
-            }
+        for (Map.Entry<String, ArrowHeadMaterial> entry : getDefaultArrowHeads().entrySet()) {
+            writeIfAbsent(new File(headsDir, entry.getKey() + ".json"), entry.getValue());
         }
+        for (Map.Entry<String, ArrowShaftMaterial> entry : getDefaultArrowShafts().entrySet()) {
+            writeIfAbsent(new File(shaftsDir, entry.getKey() + ".json"), entry.getValue());
+        }
+    }
 
-        for (Map.Entry<String, ArrowShaftMaterial> entry : defaultShafts.entrySet()) {
-            File file = new File(shaftsDir, entry.getKey() + ".json");
-            if (!file.exists()) {
-                try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-                    GSON.toJson(entry.getValue(), writer);
-                } catch (Exception ignored) {
-                }
-            }
+    private static void writeIfAbsent(File target, Object material) {
+        if (target.exists()) return;
+        File tmp = new File(target.getParentFile(), target.getName() + ".tmp");
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(tmp.toPath()), StandardCharsets.UTF_8)) {
+            GSON.toJson(material, writer);
+        } catch (Exception e) {
+            LOGGER.error("Failed to write default arrow material JSON: {}", target.getName(), e);
+            tmp.delete();
+            return;
+        }
+        try {
+            Files.move(tmp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            LOGGER.error("Failed to move default arrow material JSON into place: {}", target.getName(), e);
+            tmp.delete();
         }
     }
 }

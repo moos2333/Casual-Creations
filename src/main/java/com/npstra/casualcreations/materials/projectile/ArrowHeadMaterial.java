@@ -1,10 +1,14 @@
 package com.npstra.casualcreations.materials.projectile;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.npstra.casualcreations.materials.ColorAdapter;
+
 public class ArrowHeadMaterial {
     private final String name;
     private final float baseDamage;
     private final float baseSpeed;
     private final float recoveryRate;
+    @JsonAdapter(ColorAdapter.class)
     private final int color;
     private final String item;
     private final int meta;

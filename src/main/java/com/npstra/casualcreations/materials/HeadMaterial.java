@@ -1,7 +1,10 @@
 package com.npstra.casualcreations.materials;
 
+import com.google.gson.annotations.JsonAdapter;
+
 public class HeadMaterial {
     private final String name;
+    @JsonAdapter(ColorAdapter.class)
     private final int color;
     private final int durability;
     private final float attackDamage;

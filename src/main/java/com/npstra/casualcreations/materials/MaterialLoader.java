@@ -4,19 +4,24 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.npstra.casualcreations.CasualCreations;
 import com.npstra.casualcreations.config.ConfigHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MaterialLoader {
+    private static final Logger LOGGER = LogManager.getLogger(CasualCreations.MODID);
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(int.class, new ColorAdapter())
-            .registerTypeAdapter(Integer.class, new ColorAdapter())
             .create();
     private static final String[] HEAD_MATERIALS = {"wood", "stone", "iron", "gold", "diamond", "obsidian", "flint", "chorus", "netherbrick"};
     private static final String[] ROD_MATERIALS = {"wood", "bone", "blaze", "emerald", "gold", "chorus"};
@@ -34,9 +39,6 @@ public class MaterialLoader {
         if (ConfigHandler.enableExternalMaterials) {
             loadHeadsFromConfig(heads);
             loadRodsFromConfig(rods);
-        }
-
-        if (ConfigHandler.enableExternalMaterials) {
             generateDefaultFiles();
         }
 
@@ -55,7 +57,8 @@ public class MaterialLoader {
                         map.put(name, material);
                     }
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load head material from assets: {}", name, e);
             }
         }
     }
@@ -71,7 +74,8 @@ public class MaterialLoader {
                         map.put(name, material);
                     }
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load rod material from assets: {}", name, e);
             }
         }
     }
@@ -87,7 +91,8 @@ public class MaterialLoader {
                 if (material.getName() != null && isValidHead(material)) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load head material from config: {}", file.getName(), e);
             }
         }
     }
@@ -103,7 +108,8 @@ public class MaterialLoader {
                 if (material.getName() != null && isValidRod(material)) {
                     map.put(material.getName(), material);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LOGGER.warn("Failed to load rod material from config: {}", file.getName(), e);
             }
         }
     }
@@ -147,27 +153,29 @@ public class MaterialLoader {
         headsDir.mkdirs();
         rodsDir.mkdirs();
 
-        Map<String, HeadMaterial> defaultHeads = getDefaultHeads();
-        Map<String, RodMaterial> defaultRods = getDefaultRods();
-
-        for (Map.Entry<String, HeadMaterial> entry : defaultHeads.entrySet()) {
-            File file = new File(headsDir, entry.getKey() + ".json");
-            if (!file.exists()) {
-                try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-                    GSON.toJson(entry.getValue(), writer);
-                } catch (Exception ignored) {
-                }
-            }
+        for (Map.Entry<String, HeadMaterial> entry : getDefaultHeads().entrySet()) {
+            writeIfAbsent(new File(headsDir, entry.getKey() + ".json"), entry.getValue());
         }
+        for (Map.Entry<String, RodMaterial> entry : getDefaultRods().entrySet()) {
+            writeIfAbsent(new File(rodsDir, entry.getKey() + ".json"), entry.getValue());
+        }
+    }
 
-        for (Map.Entry<String, RodMaterial> entry : defaultRods.entrySet()) {
-            File file = new File(rodsDir, entry.getKey() + ".json");
-            if (!file.exists()) {
-                try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-                    GSON.toJson(entry.getValue(), writer);
-                } catch (Exception ignored) {
-                }
-            }
+    private static void writeIfAbsent(File target, Object material) {
+        if (target.exists()) return;
+        File tmp = new File(target.getParentFile(), target.getName() + ".tmp");
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(tmp.toPath()), StandardCharsets.UTF_8)) {
+            GSON.toJson(material, writer);
+        } catch (Exception e) {
+            LOGGER.error("Failed to write default material JSON: {}", target.getName(), e);
+            tmp.delete();
+            return;
+        }
+        try {
+            Files.move(tmp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            LOGGER.error("Failed to move default material JSON into place: {}", target.getName(), e);
+            tmp.delete();
         }
     }
 }
