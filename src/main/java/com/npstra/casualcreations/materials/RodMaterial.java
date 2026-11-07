@@ -1,10 +1,7 @@
 package com.npstra.casualcreations.materials;
 
-import com.google.gson.annotations.JsonAdapter;
-
 public class RodMaterial {
     private final String name;
-    @JsonAdapter(ColorAdapter.class)
     private final int color;
     private final float durabilityMultiplier;
     private final float damageMultiplier;
